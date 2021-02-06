@@ -1,0 +1,255 @@
+/* Cardápios Lista */
+.detailedList {
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-top: 2%;
+  width: 90%;
+}
+
+.categoryName {
+  color: black;
+}
+
+.menuItem {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+i.addIcon {
+  color: black;
+  
+  padding: 5px;
+  border-radius: 10px;
+  align-self: center;
+  vertical-align: center;
+  font-size: 20px;
+  margin-right: 2%;
+}
+
+i.addIcon:hover {
+  cursor: pointer;
+  background-color: rgb(81, 226, 44);
+  transition: all 0.3s ease-in-out;
+}
+
+i.removeItemIcon {
+  color: black;
+  background-color: green;
+  padding: 5px;
+  border-radius: 5px;
+  align-self: center;
+  vertical-align: center;
+  font-size: 10px;
+  margin-right: 1%;
+}
+
+i.removeItemIcon:hover {
+  cursor: pointer;
+}
+
+.detailedListItem {
+  width: 100%;
+}
+
+dl {
+  /*background: url(dot.gif) repeat-x 0 1.6em;*/
+  color: #ffffff;
+  margin: 0 0 1em;
+  overflow: auto;
+  width: 100%;
+}
+
+dt,
+dd.price {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+dt {
+  /*color: #f70000;*/
+  color: black;
+  float: left;
+  padding-right: 3px;
+}
+
+dd {
+  margin: 0px;
+}
+
+dd.price {
+  color: black;
+  float: right;
+  padding-left: 3px;
+}
+
+dd.ingredients {
+  color: #555;
+  font: italic 1.2em Georgia, Times, sans-serif;
+  float: left;
+  padding: 3px 0;
+  margin: 0% 0% 2% 0%;
+  width: 100%;
+}
+
+dd.ingredients-no-margin {
+  color: #555;
+  font: italic 1.2em Georgia, Times, sans-serif;
+  float: left;
+  padding: 3px 0;
+  margin: 0px 0px 0px 0px;
+  width: 100%;
+}
+
+/* Estilos para Modal */
+.itemSelectModal {
+  background-color: gainsboro;
+  padding: 3%;
+}
+
+form h3 {
+  color: black;
+}
+
+/* Estilos para a seção de carrinho */
+div.menuCart {
+  background-color: gainsboro;
+  padding: 1%;
+  margin-bottom: 3%;
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 5px;
+  text-align: center;
+  align-content: center;
+}
+
+div.cartItemList {
+    text-align: justify;
+}
+
+div.cartItem {
+  font-weight: bold;
+}
+
+p.cartItemComment {
+    font-weight: normal;
+    margin-left: 5%;
+}
+
+div.cartItemRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+p.cartItemText {
+  width: 100%;
+  font-weight: normal;
+}
+
+p.cartItemPrice {
+  margin-right: auto;
+  font-weight: normal;
+}
+
+/* Estilos para os links */
+.proceedLink {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  background-color: #00de59;
+  width: 90%;
+  margin: 1% auto;
+  align-self: center;
+  align-content: center;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+}
+
+.proceedLink:hover {
+  cursor: pointer;
+  padding: 8px 10px;
+  transition: all 0.3s ease-in-out;
+  color: black;
+  transition: 250ms;
+}
+
+.loginLink {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  background-color: #FF2E2A;
+  width: 90%;
+  margin: 1% auto;
+  align-self: center;
+  align-content: center;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+}
+
+.loginLink:hover {
+  cursor: pointer;
+  padding: 8px 10px;
+  transition: all 0.3s ease-in-out;
+  color: black;
+  transition: 250ms;
+}
+
+button.disabledLink {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    background-color: #555;
+    width: 90%;
+    margin: 1% auto;
+    align-self: center;
+    align-content: center;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
+p.totalPriceText {
+  margin-left: 2%;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 960px) {
+  form.addItemModal {
+    margin-left: auto;
+    margin-right: auto;
+    align-self: center;
+    justify-self: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .proceedLink {
+    cursor: pointer;
+    width: 90%;
+    margin: 2% auto;
+    align-content: center;
+  }
+
+  p.totalPriceText {
+    align-self: center;
+    text-align: center;
+  }
+
+  .proceedLink {
+    width: 85%;
+  }
+
+  div.menuCart {
+    width: 100%;
+  }
+}

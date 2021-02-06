@@ -1,0 +1,61 @@
+div#manageReservationsView {
+  padding: 2% 3%;
+}
+
+div.reservationItemManagerial {
+  display: flex;
+  flex-direction: row;
+}
+
+div.selectionReservation {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+}
+
+p.reservationName {
+  white-space: "pre-wrap";
+  overflow-wrap: "break-word";
+}
+
+select.selectReservationStatus {
+  margin-bottom: 5px;
+}
+
+div.selectionReservation button {
+  display: block;
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  /*background-color: #3acbf7;*/
+  background-color: #009e60;
+  width: 100%;
+}
+
+div.selectionReservation button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-in-out;
+  background-color: #00e187;
+  /*background: #fff;*/
+  /*color: #6568f4;*/
+  transition: 250ms;
+}
+
+@media screen and (max-width: 480px) {
+  div.reservationItemManagerial {
+    flex-direction: column;
+  }
+
+  div.selectionReservation{
+    width: 100%;
+    margin: 2% auto 0px;
+  }
+
+  select.selectReservationStatus {
+    width: 50%;
+    height: 40px;
+    margin: 2% auto 5px;
+  }
+}

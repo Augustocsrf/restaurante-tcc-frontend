@@ -1,0 +1,15 @@
+div.loadingRingIcon {
+  width: fit-content;
+  margin: auto;
+}
+
+div.fullScreen{
+  padding-top: 100px;
+  padding-bottom: 300px;
+}
+
+@media screen and (max-width: 480px) {
+  div.fullScreen{
+    height: auto;
+  }
+}

@@ -1,0 +1,26 @@
+.rowInfo {
+  display: flex;
+  flex-direction: row;
+  padding: 2% 1%;
+  background-color: rgb(242, 91, 91);
+  margin: 2% 0%;
+}
+
+.reverseRow {
+  flex-direction: row-reverse;
+}
+
+.rowText {
+    margin-right: 2%;
+}
+
+@media screen and (max-width: 600px) {
+  .rowInfo {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rowText {
+    margin-right: 0%;
+}
+}

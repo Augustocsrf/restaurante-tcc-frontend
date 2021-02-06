@@ -1,0 +1,99 @@
+/* Cardápios Lista */
+.linkButton {
+  background-color: rgb(238, 70, 70);
+  color: black;
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  margin-left: 1%;
+  margin-bottom: 0%;
+}
+
+.linkButton:hover {
+  background-color: rgb(247, 21, 21);
+  color: black;
+  border-radius: 4px;
+  transition: all 0.2s ease-out;
+}
+
+div.app {
+  margin-top: 3%;
+  margin-left: 1%;
+  margin-right: 1%;
+}
+
+div.iconOptions {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+}
+
+ul.categoryList {
+  list-style-type: none;
+  padding: 0px;
+  margin: 2% 1%;
+}
+
+ul.categoryList li {
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid gray;
+  font-size: 1.5em;
+  margin-bottom: 1%;
+  margin-top: 1%;
+}
+
+ul.categoryList li i {
+  align-self: center;
+  color: black;
+  font-size: 1em;
+}
+
+ul.categoryList li i.editIcon:hover {
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  color: blue;
+}
+
+ul.categoryList li i.deleteIcon:hover {
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  color: red;
+}
+
+/* Estilos de Botões */
+button#createCategoryButton {
+  display: block;
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  width: 20%;
+  background-color: #009e60;
+}
+
+button#createCategoryButton:hover {
+  color: black;
+  transition: all 0.3s ease-in-out;
+  background-color: #00e187;
+}
+
+@media screen and (max-width: 670px) {
+  button#createCategoryButton {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  button#createCategoryButton {
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}

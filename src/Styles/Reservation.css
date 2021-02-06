@@ -1,0 +1,13 @@
+.reservation-form {
+    margin: 2% auto;
+    
+}
+
+label {
+    margin-top: 10px;
+    display: block;
+}
+
+input {
+    margin: 0%;
+}

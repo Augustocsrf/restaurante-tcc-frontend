@@ -1,0 +1,129 @@
+.profileBox {
+  border: 1px solid black;
+  padding: 1% 5%;
+  width: 80%;
+  margin: 5% auto;
+}
+
+div.orderDivision {
+  border-bottom: 1px black solid;
+  margin: 15px 0px;
+}
+
+/* Estilos para pedidos */
+div.orderItem {
+  width: auto;
+  margin: 10px auto 10px 0px;
+  padding: 2%;
+  border: 1px solid black;
+}
+
+div.orderItem p.orderInfoText {
+  margin-left: 1%;
+}
+
+div.orderItem p.deliveryAddressText {
+  margin-left: 2%;
+}
+
+div.orderItem p.statusInfoText {
+  margin-bottom: 1%;
+}
+
+div.orderItem p.orderId {
+  font-weight: bold;
+}
+
+div.orderItem button.cancelOrderBtn {
+  display: block;
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  width: 40%;
+  background-color: rgb(238, 70, 70);
+}
+
+div.orderItem button.cancelOrderBtn:hover {
+  color: black;
+  transition: all 0.3s ease-in-out;
+  background-color: rgb(247, 21, 21);
+}
+
+/* Estilos para reservas */
+div.reservationItem {
+  width: auto;
+  margin: 10px auto 10px 0px;
+  padding: 2%;
+  border: 1px solid black;
+}
+
+div.reservationItem i.removeReservationIcon {
+  color: black;
+  font-size: 18px;
+  float: right;
+}
+
+div.reservationItem i.removeReservationIcon:hover {
+  color: red;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+div.reservationItem p.reservationName {
+  font-weight: bold;
+}
+
+p.reservationInfoText{
+  margin-left: 1%;
+  font-style: italic;
+}
+
+/* Estilos de Botões */
+button#logout-btn {
+  display: block;
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  width: 30%;
+  background-color: rgb(238, 70, 70);
+}
+
+button#logout-btn:hover {
+  color: black;
+  transition: all 0.3s ease-in-out;
+  background-color: rgb(247, 21, 21);
+}
+
+@media screen and (max-width: 480px) {
+  button#logout-btn {
+    width: 100%;
+  }
+
+  div.reservationItem,
+  div.orderItem {
+    width: auto;
+  }
+
+  i.removeReservationIcon {
+    font-size: 20px;
+    display: block;
+  }
+
+  div.orderItem p.statusInfoText {
+    margin-bottom: 5%;
+  }
+
+  div.orderItem button.cancelOrderBtn {
+    width: 100%;
+  }
+}
