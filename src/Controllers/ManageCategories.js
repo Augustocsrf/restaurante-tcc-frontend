@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Context } from "../Context/Context";
-import CategoryManagementGateway from "../Models/CategoryManagementGateway";
-import CategoryManagementView from "../Views/CategoryManagementView";
+import ManageCategoriesGateway from "../Models/ManageCategoriesGateway";
+import ManageCategoryView from "../Views/ManageCategoriesView";
 
 //Controller da tela de login e registro
-export default class CategoryManagement extends Component {
+export default class ManageCategories extends Component {
   static contextType = Context;
 
   constructor(props) {
@@ -14,40 +14,37 @@ export default class CategoryManagement extends Component {
     this.getCategories = this.getCategories.bind(this);
     this.deleteCategory = this.deleteCategory.bind(this);
     this.createCategory = this.createCategory.bind(this);
+    this.updateCategory = this.updateCategory.bind(this);
   }
 
   //Método para obter as categorias criadas no momento
   async getCategories() {
-    const gateway = new CategoryManagementGateway();
+    const gateway = new ManageCategoriesGateway();
     let categories = await gateway.getCategories();
 
     return categories;
   }
 
   async deleteCategory(id) {
-    const gateway = new CategoryManagementGateway();
-
+    const gateway = new ManageCategoriesGateway();
     let response = await gateway.deleteCategory(id);
 
-    if(response.error){
-      alert(response.error);
-      
-    }
+
+    return response;
+  }
+
+  async updateCategory(category){
+    const gateway = new ManageCategoriesGateway();
+    let response = await gateway.updateCategory(category);
 
     return response;
   }
   
   async createCategory(categoryData, successCallback) {
-    const gateway = new CategoryManagementGateway();
-
+    const gateway = new ManageCategoriesGateway();
     let response = await gateway.createCategory(categoryData);
 
-    alert(response.message);
-
-    //Caso a criação tenha ocorrido com sucesso, retornar para a tela anteriora
-    if (response.success) {
-      successCallback()
-    }
+    return response;
   }
 
   render() {
@@ -58,8 +55,9 @@ export default class CategoryManagement extends Component {
     }    
    
     return (
-      <CategoryManagementView
+      <ManageCategoryView
         getCategories={this.getCategories}
+        updateCategory={this.updateCategory}
         deleteCategory={this.deleteCategory}
         createCategory={this.createCategory}
       />

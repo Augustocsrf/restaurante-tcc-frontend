@@ -1,4 +1,4 @@
-import Axios from "axios";
+
 import { USER_PERMISSIONS } from "../DataTypes/User";
 import api, { defaultError } from "../Services/api";
 
@@ -23,7 +23,7 @@ export default class LoginGateway {
           permission: USER_PERMISSIONS.CLIENT,
         };
 
-        Axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.apiToken;
+        api.defaults.headers.common["Authorization"] = "Bearer " + response.data.apiToken;
 
         returnUserData = user;
       })
@@ -86,7 +86,7 @@ export default class LoginGateway {
           permission: USER_PERMISSIONS.CLIENT,
         };
 
-        Axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.apiToken;
+        api.defaults.headers.common["Authorization"] = "Bearer " + response.data.apiToken;
 
         returnUserData = user;
       })

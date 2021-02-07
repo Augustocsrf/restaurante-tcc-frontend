@@ -1,4 +1,3 @@
-import Axios from "axios";
 import api, { defaultError } from "../Services/api";
 
 export default class StaffLoginGateway {
@@ -22,7 +21,7 @@ export default class StaffLoginGateway {
           api_token: apiToken
         } = data;
 
-        Axios.defaults.headers.common["Authorization"] = "Bearer " + apiToken;
+        api.defaults.headers.common["Authorization"] = "Bearer " + apiToken;
 
         const user = {
           id,

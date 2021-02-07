@@ -14,12 +14,12 @@ import OrderInformation from "./Controllers/OrderInformation";
 import UserProfile from "./Controllers/UserProfile";
 
 import StaffLogin from "./Controllers/StaffLogin";
-import CategoryManagement from "./Controllers/CategoryManagement";
 import EditCategory from "./Controllers/EditCategory";
 import RegisterStaff from "./Controllers/RegisterStaff";
 import UserAddresses from "./Controllers/UserAddresses";
 import Reservation from "./Controllers/Reservation";
 import OrderConfirm from "./Controllers/OrderConfirm";
+import ManageCategories from "./Controllers/ManageCategories";
 import ManageProducts from './Controllers/ManageProducts'
 import ManageReservations from "./Controllers/ManageReservations";
 
@@ -70,7 +70,7 @@ export default class App extends Component {
               <Route
                 path="/funcionario/categorias"
                 exact
-                component={CategoryManagement}
+                component={ManageCategories}
               />
               <Route
                 path="/funcionario/editar-categoria/:id"

@@ -1,0 +1,17 @@
+.mui-editIcon:hover, .mui-deleteIcon:hover, .mui-checkBoxIcon:hover{
+    cursor: pointer;
+}
+
+.mui-editIcon:hover {
+    color: blue;
+    transition: all 0.3s ease-in-out;
+}
+
+.mui-deleteIcon:hover {
+    color: red;
+    transition: all 0.3s ease-in-out;
+}
+
+.mui-checkBoxIconActive {
+    color: green;
+}

@@ -3,6 +3,19 @@ import { Link } from "react-router-dom";
 import LoadingIcon from "../Components/LoadingIcon";
 import Modal from "../Components/Modal";
 import "../Styles/ManageProducts.css";
+import "../Styles/generic/IconsStylization.css";
+import "../Styles/generic/GenericScreen.css";
+
+//#region Imports de material-ui
+import { Edit, Delete, CheckBox } from "@material-ui/icons";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+//#endregion
 
 export default class ManageProductsView extends Component {
   state = {
@@ -14,10 +27,10 @@ export default class ManageProductsView extends Component {
     page: 1,
     totalItems: 60,
 
-    itemIndex: 0,
-    itemId: "",
+    itemIndex: 0, //Index de um produto sendo editado
+    itemId: "", //ID de um produto a ser editado
     name: "",
-    price: undefined,
+    price: 0,
     description: "",
     selectCategory: "",
   };
@@ -40,9 +53,10 @@ export default class ManageProductsView extends Component {
   async getAllProductsAndCategories() {
     this.setState({ loading: true });
 
-    const items = await this.props.getProductPage(this.state.page);
-
+    const items = await this.props.getAllProducts();
     const categories = await this.props.getAllCategories();
+
+    console.log({ items, categories })
 
     //Definir um valor padrão como sendo o primeiro item encontrado nas categorias
     // Entretanto, caso as categorias estejam vazias, dar um valor padrão de zero
@@ -56,36 +70,73 @@ export default class ManageProductsView extends Component {
     this.setState({ loading: false, items, categories, selectCategory });
   }
 
-  async getItemPages(){
-    this.setState({ loading: true });
-
-    const items = await this.props.getProductPage(this.state.page);
-
-    this.setState({ loading: false, items });
-  }
-
   //#region  Métodos para manipular items
   async deleteItem(id, index) {
     let { items } = this.state;
-    const deletedItem = items[index];
 
-    items.splice(index, 1);
+    //Requisitar confirmação do usuário antes de deletar a categoria
+    const confirmation = window.confirm(
+      "Você tem certeza que quer deletar " + items[index].name + "?"
+    );
+
+    if (confirmation) {
+      const deletedItem = items[index];
+
+      items.splice(index, 1);
+      this.setState({ items });
+
+      let { error, message } = await this.props.deleteItem(id);
+
+      if (error) {
+        alert(message);
+        items.splice(index, 0, deletedItem);
+        this.setState({ items });
+      }
+    }
+  }
+
+  //Método para alterar apenas o status de disponibilidade de um item
+  async changeActiveStatusItem(item, index) {
+    const { items } = this.state;
+    const { id } = item;
+    let { active } = item;
+
+    //Definir o novo valor de ativo
+    if (active === 1) {
+      active = 0;
+    } else {
+      active = 1;
+    }
+
+    //Criar objeto item com o novo valor de atividade e id
+    const itemData = {
+      id,
+      active,
+    };
+
+    //Atualizar a disponibilidade do item na tabela
+    items[index].active = active;
     this.setState({ items });
 
-    let { error, message } = await this.props.deleteItem(id);
+    const editItem = await this.props.updateItem(itemData);
 
-    if (error) {
-      alert(message);
-      items.splice(index, 0, deletedItem);
+    //Caso tenha ocorrido um erro, retornar o item ao valor anterior
+    if (editItem.error) {
+      if (active === 1) {
+        active = 0;
+      } else {
+        active = 1;
+      }
+
+      items[index].active = active;
       this.setState({ items });
     }
   }
 
+  //Método para submeter os dados de criação ou atualização de items
   async submit(e) {
     //Previnir evento padrão
     e.preventDefault();
-
-    this.setState({ loading: true });
 
     const {
       items,
@@ -100,20 +151,23 @@ export default class ManageProductsView extends Component {
 
     const itemData = {
       name,
-      categoryId,
+      categoryId: Number(categoryId),
       description,
       price: Number(price).toFixed(2),
-      id
+      id,
     };
 
     //Verificar se o modal estava com modo de edição. Se não, utilizar função de criar item, se sim, utilizar função de editar item
     if (!modalEditMode) {
+      this.setState({ loading: true });
+
       const newItem = await this.props.createItem(itemData);
+
       items.push(newItem);
     } else {
       const editItem = await this.props.updateItem(itemData);
 
-      editItem.price = Number(editItem.price)
+      editItem.price = Number(editItem.price);
       //console.log(editItem);
 
       items[itemIndex] = editItem;
@@ -128,9 +182,9 @@ export default class ManageProductsView extends Component {
       itemIndex: 0,
       itemId: "",
       name: "",
-      price: undefined,
+      price: 0,
       description: "",
-      selectCategory: "",
+      selectCategory: this.state.categories[0].id,
     });
   }
   //#endregion
@@ -143,8 +197,8 @@ export default class ManageProductsView extends Component {
   hideModal() {
     this.setState({ showModal: false });
   }
-  editItem(item, index){
-    this.setState({ 
+  editItem(item, index) {
+    this.setState({
       showModal: true,
       modalEditMode: true,
 
@@ -154,7 +208,7 @@ export default class ManageProductsView extends Component {
       price: item.price,
       description: item.description,
       selectCategory: item.category_id,
-     });
+    });
   }
   //#endregion
 
@@ -232,7 +286,7 @@ export default class ManageProductsView extends Component {
             {selectCategory()}
 
             <button className="submit-btn" type="submit" disabled={loading}>
-              {modalEditMode ? "Atualizar" : "Criar"} 
+              {modalEditMode ? "Atualizar" : "Criar"}
             </button>
 
             <button
@@ -247,55 +301,68 @@ export default class ManageProductsView extends Component {
       );
     };
 
-    const productList = () => {
-      return items.map((item, index) => {
-        return (
-          <div key={index} className="productItem">
-            <div>
-              <h3>{item.name}</h3>
-              <p>{item.category_name}</p>
-              <p>R${item.price.toFixed(2)}</p>
-              <p>{item.description}</p>
-            </div>
-
-            <div className="iconDiv">
-              <i
-                className="fas fa-edit editIcon"
-                onClick={() => this.editItem(item, index)}
-              ></i>
-
-              <i
-                className="fas fa-trash deleteIcon"
-                onClick={() => this.deleteItem(item.id, index)}
-              ></i>
-            </div>
-          </div>
-        );
-      });
-    };
-
-    const pageList = () => {
-      const pages = this.state.totalItems / 10;
-
+    const productTable = (rows) => {
       return (
-        <div className="pagination">
-          <a href="#">&laquo;</a>
-          <a href="#">1</a>
-          <a className="active" href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">4</a>
-          <a href="#">5</a>
-          <a href="#">6</a>
-          <a href="#">&raquo;</a>
-        </div>
+        <TableContainer component={Paper}>
+          <Table /*className={classes.table}*/ aria-label="simple table">
+            <TableHead /*className={classes.tableHead}*/>
+              <TableRow>
+                <TableCell>Nome</TableCell>
+                <TableCell align="right">Preço</TableCell>
+                <TableCell align="left">Descrição</TableCell>
+                <TableCell align="left">Categoria</TableCell>
+                <TableCell align="right">Disponível</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right">R${row.price.toFixed(2)}</TableCell>
+                  <TableCell align="left">{row.description}</TableCell>
+                  <TableCell align="left">{row.category_name}</TableCell>
+                  <TableCell align="right">
+                    {row.category_active === 1 ? (
+                      <CheckBox
+                        className={
+                          row.active === 1
+                            ? "mui-checkBoxIcon mui-checkBoxIconActive"
+                            : "mui-checkBoxIcon"
+                        }
+                        onClick={() => this.changeActiveStatusItem(row, index)}
+                      />
+                    ) : (
+                      "Categoria indisponível"
+                    )}
+                  </TableCell>
+
+                  <TableCell align="right">
+                    <Edit
+                      className="mui-editIcon"
+                      onClick={() => this.editItem(row, index)}
+                    />
+                    <Delete
+                      className="mui-deleteIcon"
+                      onClick={(e) => {
+                        this.deleteItem(row.id, index);
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       );
-    }
+    };
     //#endregion
 
     return (
-      <div className="AppBackground ManageProductsView">
+      <div className="AppBackground paddedScreen">
         <div className="buttonsDiv">
-          <Link to={"/funcionario/caegorias"} className="button">
+          <Link to={"/funcionario/categorias"} className="button">
             Gerenciar Categorias
           </Link>
 
@@ -308,10 +375,7 @@ export default class ManageProductsView extends Component {
           {createItemModal()}
         </Modal>
 
-        {pageList()}
-
-        {loading ? <LoadingIcon fullScreen={true} /> : productList()}
-
+        {loading ? <LoadingIcon fullScreen={true} /> : productTable(items)}
       </div>
     );
   }

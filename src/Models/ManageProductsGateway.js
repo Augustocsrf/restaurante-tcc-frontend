@@ -19,23 +19,6 @@ export default class ManageProductsGateway {
     return returnData;
   }
 
-  async getItemsPage(page) {
-    var returnData;
-
-    await api
-      .get("/items/page/" + page)
-      .then((response) => {
-        const { data } = response;
-        returnData = data;
-      })
-      .catch((e) => {
-        defaultError(e);
-        returnData = [];
-      });
-
-    return returnData;
-  }
-
   async getCategories() {
     var returnData = [];
 
@@ -95,12 +78,7 @@ export default class ManageProductsGateway {
     await api
       .put("/items/" + itemData.id, itemData)
       .then((response) => {
-        console.log(response);
-
         const { data } = response;
-        
-        alert(data.message);
-
         returnData = data.item;        
       })
       .catch((e) => {

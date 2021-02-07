@@ -5,7 +5,7 @@ import Modal from "../Components/Modal";
 import "../Styles/CategoryManagement.css";
 import "../Styles/generic/GenericForm.css";
 
-export default class CategoryManagementView extends Component {
+export default class ManageCategoryView extends Component {
   state = {
     loading: false,
     showModal: false,
