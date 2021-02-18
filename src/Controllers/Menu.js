@@ -10,6 +10,9 @@ export default class Menu extends Component {
   constructor(props) {
     super(props);
 
+    //Mandar tela para o topo da página
+    window.scrollTo(0, 0);
+
     //Bind funções criadas
     this.getMenu = this.getMenu.bind(this);
   }

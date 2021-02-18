@@ -20,7 +20,10 @@ export default class ManageCategoriesGateway {
   }
 
   async updateCategory(category) {
-    var returnData;
+    var returnData = {
+      error: true,
+    };
+
 
     await api
       .put("categories/" + category.id, category)
@@ -38,7 +41,10 @@ export default class ManageCategoriesGateway {
   }
 
   async deleteCategory(id) {
-    var returnData;
+    var returnData = {
+      error: true,
+    };
+
 
     await api
       .delete("categories/" + id)

@@ -44,7 +44,11 @@ export function FooterContainer() {
                   <Footer.Link>Produtos</Footer.Link>
                 </Link>
 
-                <Link className="routeLink" to="/funcionario/relatorios">
+                <Link className="routeLink" to="/admin/funcionarios">
+                  <Footer.Link>Funcionários</Footer.Link>
+                </Link>
+
+                <Link className="routeLink" to="/admin/relatorios">
                   <Footer.Link>Relatórios</Footer.Link>
                 </Link>
               </div>

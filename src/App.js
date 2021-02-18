@@ -4,8 +4,6 @@ import Navbar from "./Components/NavBar/Navbar";
 import { FooterContainer } from "./containers/footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import "./Styles/App.css";
-
 //Importação das telas
 import HomeView from "./Views/HomeView";
 import Login from "./Controllers/Login";
@@ -14,15 +12,23 @@ import OrderInformation from "./Controllers/OrderInformation";
 import UserProfile from "./Controllers/UserProfile";
 
 import StaffLogin from "./Controllers/StaffLogin";
-import EditCategory from "./Controllers/EditCategory";
 import RegisterStaff from "./Controllers/RegisterStaff";
 import UserAddresses from "./Controllers/UserAddresses";
 import Reservation from "./Controllers/Reservation";
 import OrderConfirm from "./Controllers/OrderConfirm";
+
+import ManageOrders from "./Controllers/ManageOrders";
 import ManageCategories from "./Controllers/ManageCategories";
 import ManageProducts from './Controllers/ManageProducts'
 import ManageReservations from "./Controllers/ManageReservations";
+import ManageStaff from "./Controllers/ManageStaff";
+import DataReport from "./Controllers/DataReport";
 
+import "./Styles/App.css";
+import "./Styles/generic/GenericScreen.css";
+import "./Styles/generic/GenericForm.css";
+import "./Styles/generic/IconsStylization.css";
+import "./Styles/generic/Form.css";
 
 
 export default class App extends Component {
@@ -68,20 +74,34 @@ export default class App extends Component {
               />
     
               <Route
+                path="/funcionario/pedidos"
+                exact
+                component={ManageOrders}
+              />
+
+              <Route
                 path="/funcionario/categorias"
                 exact
                 component={ManageCategories}
               />
+
               <Route
-                path="/funcionario/editar-categoria/:id"
+                path="/admin/funcionarios"
                 exact
-                component={EditCategory}
+                component={ManageStaff}
               />
               <Route
                 path="/admin/cadastrar-funcionario"
                 exact
                 component={RegisterStaff}
               />
+
+              <Route
+                path="/admin/relatorios"
+                exact
+                component={DataReport}
+              />
+
             </Switch>
 
             <div className="footer">

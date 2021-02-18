@@ -1,0 +1,28 @@
+div#dataReportView{
+    display: flex;
+    flex-direction: row;   
+}
+
+section#reportDataTypeSelection {
+    height: 300px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+main#dataReportDisplay {
+    margin: 0% 2% 0%;
+    height: 300px;
+    width: 100%;
+    border: 1px solid black;
+}
+
+@media screen and (max-width: 480px) {
+    div#dataReportView{
+        flex-direction: column;   
+    }
+
+    main#dataReportDisplay {
+        margin: 2% 0%;
+    }
+}

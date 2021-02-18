@@ -10,6 +10,9 @@ export default class OrderInformation extends Component {
   constructor(props) {
     super(props);
 
+    //Mandar tela para o topo da página
+    window.scrollTo(0, 0);
+    
     this.getAddresses = this.getAddresses.bind(this);
     this.proceedToConfirmation = this.proceedToConfirmation.bind(this);
   }

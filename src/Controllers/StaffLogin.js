@@ -11,6 +11,9 @@ export default class StaffLogin extends Component {
   constructor(props) {
     super(props);
 
+    //Mandar tela para o topo da página
+    window.scrollTo(0, 0);
+    
     this.state = {
       logged: false,
     };

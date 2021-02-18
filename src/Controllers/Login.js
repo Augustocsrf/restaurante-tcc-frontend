@@ -11,6 +11,9 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
 
+    //Mandar tela para o topo da página
+    window.scrollTo(0, 0);
+    
     //Bind funções criadas
     this.handleLogin = this.handleLogin.bind(this);
     this.handleRegister = this.handleRegister.bind(this);

@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import LoadingIcon from "../Components/LoadingIcon";
 import Modal from "../Components/Modal";
 import "../Styles/ManageProducts.css";
-import "../Styles/generic/IconsStylization.css";
-import "../Styles/generic/GenericScreen.css";
 
 //#region Imports de material-ui
 import { Edit, Delete, CheckBox } from "@material-ui/icons";
@@ -56,7 +54,7 @@ export default class ManageProductsView extends Component {
     const items = await this.props.getAllProducts();
     const categories = await this.props.getAllCategories();
 
-    console.log({ items, categories })
+    console.log({ items, categories });
 
     //Definir um valor padrão como sendo o primeiro item encontrado nas categorias
     // Entretanto, caso as categorias estejam vazias, dar um valor padrão de zero
@@ -163,12 +161,23 @@ export default class ManageProductsView extends Component {
 
       const newItem = await this.props.createItem(itemData);
 
+      if (newItem.error) {
+        this.setState({ loading: false });
+        return 0;
+      }
+
       items.push(newItem);
     } else {
+      this.setState({ loading: true });
+      
       const editItem = await this.props.updateItem(itemData);
 
+      if (editItem.error) {
+        this.setState({ loading: false });
+        return 0;
+      }
+
       editItem.price = Number(editItem.price);
-      //console.log(editItem);
 
       items[itemIndex] = editItem;
     }
@@ -195,7 +204,15 @@ export default class ManageProductsView extends Component {
     this.setState({ showModal: true });
   }
   hideModal() {
-    this.setState({ showModal: false });
+    this.setState({
+      showModal: false,
+      itemIndex: 0, //Index de um produto sendo editado
+      itemId: "", //ID de um produto a ser editado
+      name: "",
+      price: 0,
+      description: "",
+      selectCategory: "",
+    });
   }
   editItem(item, index) {
     this.setState({
@@ -241,7 +258,6 @@ export default class ManageProductsView extends Component {
         <div className="row">
           {/** Formulário para que o administrador cadastre um usuário */}
           <form onSubmit={this.submit} className="genericForm">
-            <h3>Criar Categoria</h3>
             <div className="form-group">
               <input
                 type="text"
@@ -316,7 +332,7 @@ export default class ManageProductsView extends Component {
             </TableHead>
             <TableBody>
               {rows.map((row, index) => (
-                <TableRow key={index}>
+                <TableRow key={index} style={ index % 2? { background : "#d1d1d1" }:{ background : "white" }}>
                   <TableCell component="th" scope="row">
                     {row.name}
                   </TableCell>
@@ -375,7 +391,8 @@ export default class ManageProductsView extends Component {
           {createItemModal()}
         </Modal>
 
-        {loading ? <LoadingIcon fullScreen={true} /> : productTable(items)}
+        {productTable(items)}
+        {loading ? <LoadingIcon /> : null}
       </div>
     );
   }

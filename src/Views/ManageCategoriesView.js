@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import LoadingIcon from "../Components/LoadingIcon";
 import Modal from "../Components/Modal";
 import "../Styles/CategoryManagement.css";
-import "../Styles/generic/GenericForm.css";
-import "../Styles/generic/GenericScreen.css";
-import "../Styles/generic/IconsStylization.css";
+import "../Styles/ManageProducts.css";
 
 //#region Imports de material-ui
 import { Edit, Delete, CheckBox } from "@material-ui/icons";
@@ -129,15 +127,12 @@ export default class ManageCategoryView extends Component {
       //Passar dados informados no formulário para criar dados
       const newCategory = await this.props.createCategory({ name });
 
-      //Parar processo se um erro tiver ocorrido
+      //Caso não ter ocorrido erro, adicionar nova categoria criada a lista
       if (newCategory.error) {
-        return 0;
       }
 
-      //Adicionar nova categoria criada a lista
       categories.push(newCategory);
     } else {
-
       //Obter informações da categoria a ser editada
       const categoryData = {
         id,
@@ -146,10 +141,14 @@ export default class ManageCategoryView extends Component {
 
       const update = await this.props.updateCategory(categoryData);
 
-      //Caso não tenha ocorrido erro
-      if (!update.error) {
-        categories[index].name = name;
+      //Caso um erro tenha ocorrido, parar o processo
+      if (update.error) {
+        this.setState({ loading: false });
+        return 0;
       }
+
+      //Atualizar lista de categorias
+      categories[index].name = name;
     }
 
     this.hideModal();
@@ -190,7 +189,6 @@ export default class ManageCategoryView extends Component {
         <div className="row">
           {/** Formulário para que o administrador cadastre um usuário */}
           <form onSubmit={this.submit} className="genericForm">
-            <h3>Criar Categoria</h3>
             <div className="form-group">
               <input
                 type="text"
@@ -253,7 +251,7 @@ export default class ManageCategoryView extends Component {
                     />
                   </TableCell>
 
-                  <TableCell align="left">
+                  <TableCell align="right">
                     <Edit
                       className="mui-editIcon"
                       onClick={() => this.showEditModal(row, index)}
@@ -275,24 +273,24 @@ export default class ManageCategoryView extends Component {
 
     return (
       <div className="AppBackground paddedScreen">
-        <button id="createCategoryButton" onClick={this.showModal}>
-          Criar Categoria Nova
-        </button>
+        <div className="buttonsDiv">
+          <button className="button" onClick={this.showModal}>
+            Criar Nova Categoria
+          </button>
+        </div>
 
         <Modal show={showModal} handleClose={this.hideModal}>
           {createCategoryModal()}
         </Modal>
 
-        {loading ? (
-          <LoadingIcon fullScreen={true} />
-        ) : (
-          categoryTable(categories)
-        )}
+        {categoryTable(categories)}
+        {loading ? <LoadingIcon /> : null}
       </div>
     );
   }
 }
 
+//#region Old Code
 /**
  * //const editCategoryModal = () => {};
     const categoryList = () => {
@@ -322,4 +320,32 @@ export default class ManageCategoryView extends Component {
       );
     };
 
+    const categoryList = () => {
+      return (
+        <ul className="categoryList">
+          {this.state.categories.map((item, index) => {
+            return (
+              <div key={index}>
+                <li>
+                  {item.name}
+
+                  <div className="iconOptions">
+                    <Link to={`/funcionario/editar-categoria/${item.id}`}>
+                      <i className="fas fa-edit editIcon"></i>
+                    </Link>
+
+                    <i
+                      className="fas fa-trash deleteIcon"
+                      onClick={() => this.deleteCategory(item.id, index)}
+                    ></i>
+                  </div>
+                </li>
+              </div>
+            );
+          })}
+        </ul>
+      );
+    };
+
  */
+//#endregion

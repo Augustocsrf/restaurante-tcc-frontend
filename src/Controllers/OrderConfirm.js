@@ -10,6 +10,9 @@ export default class OrderConfirm extends Component {
   constructor(props) {
     super(props);
 
+    //Mandar tela para o topo da página
+    window.scrollTo(0, 0);
+
     this.makeOrder = this.makeOrder.bind(this);
   }
 

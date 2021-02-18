@@ -1,3 +1,31 @@
 .paddedScreen {
   padding: 1% 5%;
 }
+
+.AppBackground {
+  background-color: rgb(240, 240, 240);
+}
+
+.greenButton {
+  display: block;
+  padding: 8px 0px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+  background-color: #009e60;
+  margin: 1% 0% 2% 0%;
+  margin-left: 0%;
+  width: 200px;   
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.greenButton:hover {
+  background-color: #00e187;
+  transition: all 0.3s ease-in-out;
+  color: black;
+}

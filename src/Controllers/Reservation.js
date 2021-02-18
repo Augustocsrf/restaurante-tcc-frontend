@@ -9,6 +9,9 @@ export default class Reservation extends Component {
   constructor(props) {
     super(props);
 
+    //Mandar tela para o topo da página
+    window.scrollTo(0, 0);
+
     this.makeReservation = this.makeReservation.bind(this);
     this.getBusyDays = this.getBusyDays.bind(this);
   }

@@ -6,6 +6,10 @@ import ManageProductsView from "../Views/ManageProductsView";
 export default class ManageProducts extends Component {
   constructor(props) {
     super(props);
+
+    //Mandar tela para o topo da página
+    window.scrollTo(0, 0);
+    
     this.getAllProducts = this.getAllProducts.bind(this);
     this.getAllCategories = this.getAllCategories.bind(this);
     this.createItem = this.createItem.bind(this);

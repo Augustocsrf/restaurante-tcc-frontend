@@ -10,6 +10,9 @@ export default class ManageReservations extends Component {
   constructor(props) {
     super(props);
 
+    //Mandar tela para o topo da página
+    window.scrollTo(0, 0);
+
     this.getReservations = this.getReservations.bind(this);
     this.getReservationStatuses = this.getReservationStatuses.bind(this);
     this.updateReservation = this.updateReservation.bind(this);

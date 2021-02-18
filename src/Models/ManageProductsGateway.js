@@ -66,24 +66,23 @@ export default class ManageProductsGateway {
       })
       .catch((e) => {
         defaultError(e);
-        returnData = false;  
+        returnData = false;
       });
 
     return returnData;
   }
 
   async updateItem(itemData) {
-    var returnData;
+    var returnData = { error: true };
 
     await api
       .put("/items/" + itemData.id, itemData)
       .then((response) => {
         const { data } = response;
-        returnData = data.item;        
+        returnData = data.item;
       })
       .catch((e) => {
         defaultError(e);
-        returnData = false;
       });
 
     return returnData;
