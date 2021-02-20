@@ -4,17 +4,29 @@ div#dataReportView{
 }
 
 section#reportDataTypeSelection {
-    height: 300px;
-    border: 1px solid black;
+    height: fit-content;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
+    background: white;
 }
+
+section#reportDataTypeSelection Button {
+    margin: 10px 0%;
+}
+
+section#reportDataTypeSelection Button:first {
+    margin: 0px 0% 10px;
+}
+
 
 main#dataReportDisplay {
     margin: 0% 2% 0%;
     height: 300px;
     width: 100%;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 @media screen and (max-width: 480px) {

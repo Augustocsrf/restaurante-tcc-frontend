@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import DataReportView from "../Views/DataReportView";
+import DataReportGateway, { REPORTS } from "../Models/DataReportGateway";
 
 export default class DataReport extends Component {
   constructor(props) {
@@ -8,9 +9,16 @@ export default class DataReport extends Component {
     this.getReport = this.getReport.bind(this);
   }
 
-  async getReport() {}
+  async getReport(reportType) {
+    const gateway = new DataReportGateway();
+    const response = await gateway.getReport(reportType);
+
+    return response
+  }
 
   render() {
-    return <DataReportView getReport={this.getReport} />;
+    const { getReport } = this;
+    return <DataReportView getReport={getReport} reports={REPORTS} />;
   }
 }
+
