@@ -1,16 +1,14 @@
-import { Component } from "react";
 import api, { defaultError } from "../Services/api";
 
-
-export default class OrderInformationGateway extends Component {
+export default class OrderInformationGateway {
   async getAddresses(userData) {
     var returnData;
 
     await api
-      .get('clients/' + userData.id + '/addresses')
+      .get("clients/" + userData.id + "/addresses")
       .then((response) => {
         const { data } = response;
-        returnData = data;        
+        returnData = data;
       })
       .catch((e) => {
         defaultError(e);

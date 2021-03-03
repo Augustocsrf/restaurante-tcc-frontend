@@ -1,5 +1,8 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+
 import { Context } from "../Context/Context";
+
 import ManageOrdersGateway from "../Models/ManageOrdersGateway";
 import ManageOrdersView from "../Views/ManageOrdersView";
 
@@ -41,8 +44,15 @@ export default class Menu extends Component {
   }
 
   render() {
-    //const { user, setShoppingCart } = this.context;
+    const { user } = this.context;
     const { updateOrder, getOrdersStatuses, getOpenOrders } = this;
+
+    //Apenas permitir acesso a usuário administrador ou funcionário.
+    // Se um usuário que não tiver obtido essa permissão tentar entrar, redirecionar o usuário para outra página
+    if (!user.isUserStaff() && !user.isUserAdmin()) {
+      alert("Você não tem permissão para acessar essa página");
+      return <Redirect to="/" />;
+    }
 
     return (
       <ManageOrdersView

@@ -1,6 +1,8 @@
 import { Component } from "react";
+
 import { DELIVERY_TYPES } from "../DataTypes/DeliveryTypes";
 import { PAYMENT_TYPES } from "../DataTypes/PaymentTypes";
+
 import "../Styles/OrderInformation.css";
 
 export default class OrderInformationView extends Component {
@@ -118,7 +120,7 @@ export default class OrderInformationView extends Component {
       deliveryAddress,
       cashToPay,
     };
-    
+
     this.props.proceedToConfirmation(orderSpecifications);
   }
 
@@ -194,7 +196,11 @@ export default class OrderInformationView extends Component {
           <div className="divisionLine" />
 
           <h3>Método de Pagamento</h3>
-          <div className="radioButtonGroup" id="radioButtonGroupPaymentType" onChange={this.selectPayment}>
+          <div
+            className="radioButtonGroup"
+            id="radioButtonGroupPaymentType"
+            onChange={this.selectPayment}
+          >
             <p className="radioButtonParagraph">
               <input
                 type="radio"

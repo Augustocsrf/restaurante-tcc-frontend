@@ -1,5 +1,7 @@
 import { Component } from "react";
+
 import { Context } from "../Context/Context";
+
 import ReservationGateway from "../Models/ReservationGateway";
 import ReservationView from "../Views/ReservationView";
 
@@ -30,9 +32,9 @@ export default class Reservation extends Component {
     const gateway = new ReservationGateway();
     let { message, error } = await gateway.makeReservation(reservationData);
 
-    if(!error){
-      alert(message);  
-      this.props.history.push('/');
+    if (!error) {
+      alert(message);
+      this.props.history.push("/");
     }
   }
 

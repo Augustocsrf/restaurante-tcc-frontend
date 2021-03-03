@@ -1,8 +1,10 @@
 import { Component } from "react";
+import { Redirect } from "react-router-dom";
+
+import { Context } from "../Context/Context";
+
 import ManageReservationsView from "../Views/ManageReservationsView";
 import ManageReservationsGateway from "../Models/ManageReservationsGateway";
-import { Context } from "../Context/Context";
-import { Redirect } from "react-router-dom";
 
 export default class ManageReservations extends Component {
   static contextType = Context;
@@ -42,9 +44,11 @@ export default class ManageReservations extends Component {
   render() {
     const { user } = this.context;
 
-    //Se um usuário não for nem funcionário nem amdinistrador
+    //Apenas permitir acesso a usuário administrador ou funcionário.
+    // Se um usuário que não tiver obtido essa permissão tentar entrar, redirecionar o usuário para outra página
     if (!user.isUserStaff() && !user.isUserAdmin()) {
-      return <Redirect to="/login" />;
+      alert("Você não tem permissão para acessar essa página");
+      return <Redirect to="/" />;
     }
 
     return (

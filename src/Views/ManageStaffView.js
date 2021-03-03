@@ -1,10 +1,14 @@
 import React, { Component } from "react";
+
+import { formatPhone, formatDate } from "../Services/FormatterFunctions";
 import { USER_PERMISSIONS } from "../DataTypes/User";
+import ExportExcel from "../Components/ExportExcel";
 import Modal from "../Components/Modal";
+
 import "../Styles/ManageProducts.css";
 import "../Styles/generic/GenericForm.css";
 
-//#region Imports de material-ui
+//#region Imports de material-ui para fazer a Tabela
 import { Delete } from "@material-ui/icons";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -43,7 +47,6 @@ export default class ManageStaffView extends Component {
   }
 
   componentDidMount() {
-    
     this.getStaff();
   }
 
@@ -57,7 +60,7 @@ export default class ManageStaffView extends Component {
 
   //Método para remover permissões de funcionário
   async demoteStaff(staffer, index) {
-    //Pedir confirmação do usuário para deletar um funcionário
+    //Pedir confirmação do usuário para remover permissão de um funcionário
     const confirmation = window.confirm(
       "Você tem certeza que quer remover as permissões de funcionário de " +
         staffer.name +
@@ -120,19 +123,19 @@ export default class ManageStaffView extends Component {
         staff.push(newStaff);
 
         this.setState({ staff });
+
+        this.setState({
+          showModal: false,
+
+          email: "",
+          password: "",
+          confirmPassword: "",
+          name: "",
+          lastName: "",
+          phone: "",
+        });
       }
     }
-
-    this.setState({
-      showModal: false,
-
-      email: "",
-      password: "",
-      confirmPassword: "",
-      name: "",
-      lastName: "",
-      phone: "",
-    });
   }
 
   //#region Métodos para abrir ou fechar modal
@@ -148,6 +151,7 @@ export default class ManageStaffView extends Component {
   render() {
     const { staff, loading, showModal } = this.state;
 
+    //#region Métodos que
     const modalForm = () => {
       return (
         <div className="row">
@@ -248,8 +252,6 @@ export default class ManageStaffView extends Component {
     };
 
     const staffTable = (rows) => {
-      
-
       return (
         <TableContainer component={Paper}>
           <Table /*className={classes.table}*/ aria-label="simple table">
@@ -263,31 +265,60 @@ export default class ManageStaffView extends Component {
             </TableHead>
             <TableBody>
               {rows.map((row, index) => {
-                //Formatar data de criação
-                const createdDate = new Date(row.created_at);
-                const created = createdDate.getDate() + "/" + (createdDate.getMonth()+1) + "/" + createdDate.getFullYear();
-
                 return (
-                <TableRow key={index} style={ index % 2? { background : "#d1d1d1" }:{ background : "white" }}>
-                  <TableCell component="th" scope="row">
-                    {row.name + " " + row.lastName}
-                  </TableCell>
-                  <TableCell align="left">{row.email}</TableCell>
-                  <TableCell align="left">{row.phone}</TableCell>
-                  <TableCell align="left">{created}</TableCell>
-                  <TableCell align="right">
-                    <Delete
-                      className="mui-deleteIcon"
-                      onClick={(e) => {
-                        this.demoteStaff(row, index);
-                      }}
-                    />
-                  </TableCell>
-                </TableRow>
-              )})}
+                  <TableRow
+                    key={index}
+                    style={
+                      index % 2
+                        ? { background: "#d1d1d1" }
+                        : { background: "white" }
+                    }
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.name + " " + row.lastName}
+                    </TableCell>
+                    <TableCell align="left">{row.email}</TableCell>
+                    <TableCell align="left">{formatPhone(row.phone)}</TableCell>
+                    <TableCell align="left">
+                      {formatDate(row.created_at)}
+                    </TableCell>
+                    <TableCell align="right">
+                      <Delete
+                        className="mui-deleteIcon"
+                        onClick={(e) => {
+                          this.demoteStaff(row, index);
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
+      );
+    };
+    //#endregion
+
+    //Botão para baixar um planilha mostrando toda a tabela de funcionários
+    const excelDownloadButton = () => {
+      //Colunas que estarão na planilha do excel
+      const headers = [
+        { label: "Nome", value: "name" },
+        { label: "Sobrenome", value: "lastName" },
+        { label: "E-mail", value: "email" },
+        { label: "Telefone", value: "phone" },
+        { label: "Criado em", value: "created_at" },
+        { label: "Atualizado em", value: "updated_at" },
+      ];
+
+      return (
+        <ExportExcel
+          headers={headers}
+          data={staff}
+          sheetName={"Funcionários"}
+          title="Baixar tabela de Funcionários"
+        />
       );
     };
 
@@ -305,7 +336,7 @@ export default class ManageStaffView extends Component {
 
         {staffTable(staff)}
 
-        {loading ? <LoadingIcon /> : null}
+        {loading ? <LoadingIcon /> : excelDownloadButton()}
       </div>
     );
   }

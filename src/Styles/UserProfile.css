@@ -2,7 +2,34 @@
   border: 1px solid black;
   padding: 1% 5%;
   width: 80%;
-  margin: 5% auto;
+  margin: 1% auto 2%;
+  background-color: white;
+}
+
+div.profileBox .editProfileButtons {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  background-color: #009e60;
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  padding: auto;
+  font-size: 15px;
+  width: 20%;
+  text-transform: capitalize;
+  transition: all 0.3s ease-in-out;
+}
+
+div.profileBox .editProfileButtons:hover {
+  color: black;
+  transition: all 0.3s ease-in-out;
+  background-color: #00e187;
 }
 
 div.orderDivision {
@@ -34,7 +61,8 @@ div.orderItem p.orderId {
   font-weight: bold;
 }
 
-div.orderItem button.cancelOrderBtn {
+div.orderItem button.cancelOrderBtn,
+div.reservationItem button.cancelReservationBtn {
   display: block;
   padding: 8px 20px;
   border-radius: 4px;
@@ -45,10 +73,12 @@ div.orderItem button.cancelOrderBtn {
   margin-top: 10px;
   margin-bottom: 5px;
   width: 40%;
+  transition: all 0.3s ease-in-out;
   background-color: rgb(238, 70, 70);
 }
 
-div.orderItem button.cancelOrderBtn:hover {
+div.orderItem button.cancelOrderBtn:hover,
+div.reservationItem button.cancelReservationBtn:hover {
   color: black;
   transition: all 0.3s ease-in-out;
   background-color: rgb(247, 21, 21);
@@ -78,7 +108,7 @@ div.reservationItem p.reservationName {
   font-weight: bold;
 }
 
-p.reservationInfoText{
+p.reservationInfoText {
   margin-left: 1%;
   font-style: italic;
 }
@@ -104,8 +134,47 @@ button#logout-btn:hover {
   background-color: rgb(247, 21, 21);
 }
 
+.formAttempt {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#linkToAddress {
+  display: block;
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  margin-top: 1%;
+  margin-bottom: 0px;
+  margin-left: 5%;
+
+  background-color: #009e60;
+  text-decoration: none;
+  text-align: center;
+  width: 150px;
+  transition: all 0.3s ease-in-out;
+}
+
+#linkToAddress:hover {
+  color: black;
+  transition: all 0.3s ease-in-out;
+  background-color: #00e187;
+}
+
 @media screen and (max-width: 480px) {
   button#logout-btn {
+    width: 100%;
+  }
+
+  #linkToAddress {
+    width: 80%;
+    margin: 2% auto 2%;
+  }
+
+  div.profileBox button.editProfileButtons {
     width: 100%;
   }
 

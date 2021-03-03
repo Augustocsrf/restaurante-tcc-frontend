@@ -6,6 +6,8 @@ const USER_KEY = "userData";
 export const saveCredentials = (userData) => {
   const userDataStringify = JSON.stringify(userData);
 
+  api.defaults.headers.common["Authorization"] = "Bearer " + userData.apiToken;
+  
   localStorage.setItem(USER_KEY, userDataStringify);
 };
 
@@ -19,7 +21,6 @@ export const retrieveSavedUser = () => {
 
   const userData = JSON.parse(userDataString);
   
-  //console.log( "Bearer " + userData.apiToken );
   api.defaults.headers.common["Authorization"] = "Bearer " + userData.apiToken;
   
   return new User(userData);

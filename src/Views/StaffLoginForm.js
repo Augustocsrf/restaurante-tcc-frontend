@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+
 import LoadingIcon from "../Components/LoadingIcon";
+
 import "../Styles/generic/GenericForm.css";
 
 export default class StaffLoginForm extends Component {
@@ -26,7 +28,7 @@ export default class StaffLoginForm extends Component {
       password: this.state.password,
     });
 
-    this.setState({ loading: false })
+    this.setState({ loading: false });
   }
 
   render() {

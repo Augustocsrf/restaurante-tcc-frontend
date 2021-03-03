@@ -1,5 +1,7 @@
 import { Component } from "react";
+
 import LoadingIcon from "../Components/LoadingIcon";
+
 import "../Styles/OrderConfirm.css";
 
 export default class OrderConfirmView extends Component {

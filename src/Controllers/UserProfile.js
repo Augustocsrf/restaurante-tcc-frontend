@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+
 import { Context } from "../Context/Context";
+import { removeCredentials } from "../Services/authentication";
+
 import UserProfileView from "../Views/UserProfileView";
 import UserProfileGateway from "../Models/UserProfileGateway";
-import { removeCredentials } from "../Services/authentication";
 
 //Controller da tela de login do funcionário
 export default class UserProfile extends Component {
@@ -21,6 +23,9 @@ export default class UserProfile extends Component {
     );
     this.cancelReservation = this.cancelReservation.bind(this);
     this.cancelOrder = this.cancelOrder.bind(this);
+
+    this.update = this.update.bind(this);
+    this.updatePassword = this.updatePassword.bind(this);
   }
 
   async getClientsOpenOrdersAndReservations() {
@@ -56,6 +61,35 @@ export default class UserProfile extends Component {
     return returnData;
   }
 
+  async update(updateData) {
+    const { user, setUser } = this.context;
+    updateData.id = user.id;
+
+    const gateway = new UserProfileGateway();
+    const response = await gateway.updateUser(updateData);
+
+    // Caso a atualização tenha ocorrido com sucesso, atualizar os valores do usuário localmente com os valores recebidos
+    if (!response.error) {
+      setUser(response);
+    }
+
+    return response;
+  }
+
+  async updatePassword(updateData) {
+    const validated = this.validatePassword(updateData);
+
+    if (validated) {
+      const { user } = this.context;
+      updateData.id = user.id;
+
+      const gateway = new UserProfileGateway();
+      const response = await gateway.updatePassword(updateData);
+
+      return response;
+    }
+  }
+
   logout() {
     const { setUser } = this.context;
     setUser();
@@ -63,12 +97,37 @@ export default class UserProfile extends Component {
     this.props.history.push("/");
   }
 
+  //Realizar validação dos dados
+  validatePassword(passwordData) {
+    const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,12}$/;
+    const { password, passwordConfirm } = passwordData;
+
+    //Fazer uma validação da senha informada para ter entre 8 e 12 valores com simbolos ou numeros
+    if (regexPassword.test(password)) {
+      //Verificar se a senha é igual a senha de confirmação
+      let passwordValidation = passwordConfirm === password;
+
+      //Se a validação funcionar, prosseguir com o cadastro, se não, retornar erro
+      if (passwordValidation) {
+        return true;
+      } else {
+        alert("Senha e a confirmação de senha devem ser iguais");
+        return false;
+      }
+    } else {
+      //Alertar o usuário que a senha informada não atende as especificações
+      alert("Senha deve ter pelo menos 7 digitos e 1 numero");
+    }
+
+    return false;
+  }
+
   render() {
     const { user } = this.context;
 
-    //Caso o usuário não tenha nenhum id (o que quer que o usuário não está logado)
-    // Ou se o usuário estiver logado, mas não for um cliente, mandar o usuário para a tela de login ao invés desta
-    if (user.id === 0) {
+    //Verificar se o usuário está logado. Se não estiver, retornar para a página de login
+    if (user.isUserGuest()) {
+      alert("Você precisa estar logado para acessar essa página");
       return <Redirect to="/login" />;
     }
 
@@ -81,6 +140,8 @@ export default class UserProfile extends Component {
         }
         cancelReservation={this.cancelReservation}
         cancelOrder={this.cancelOrder}
+        updatePassword={this.updatePassword}
+        update={this.update}
       />
     );
   }

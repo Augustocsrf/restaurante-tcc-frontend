@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+
 import { Context } from "../Context/Context";
+
 import MenuGateway from "../Models/MenuGateway";
 import MenuView from "../Views/MenuView";
 
@@ -25,7 +27,13 @@ export default class Menu extends Component {
 
   render() {
     const { user, setShoppingCart } = this.context;
-    
-    return <MenuView getMenu={this.getMenu} user={user} setShoppingCart={setShoppingCart} />;
+
+    return (
+      <MenuView
+        getMenu={this.getMenu}
+        user={user}
+        setShoppingCart={setShoppingCart}
+      />
+    );
   }
 }

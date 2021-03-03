@@ -1,7 +1,10 @@
 import React, { Component } from "react";
+
+import ExportExcel from "../Components/ExportExcel";
 import LoadingIcon from "../Components/LoadingIcon";
 import Modal from "../Components/Modal";
-import "../Styles/CategoryManagement.css";
+
+import "../Styles/ManageCategories.css";
 import "../Styles/ManageProducts.css";
 
 //#region Imports de material-ui
@@ -183,7 +186,7 @@ export default class ManageCategoryView extends Component {
   render() {
     const { loading, categories, showModal, modalEditMode } = this.state;
 
-    //#region Componentes visuais do componente
+    //#region Componentes visuais da página
     const createCategoryModal = () => {
       return (
         <div className="row">
@@ -270,6 +273,26 @@ export default class ManageCategoryView extends Component {
         </TableContainer>
       );
     };
+    //#endregion
+
+    //Botão para baixar um planilha mostrando toda a tabela de categorias
+    const excelDownloadButton = () => {
+      //Colunas que estarão na planilha do excel
+      const headers = [
+        { label: "Nome", value: "name" },
+        { label: "Criado em", value: "created_at" },
+        { label: "Atualizado em", value: "updated_at" },
+      ];
+
+      return (
+        <ExportExcel
+          headers={headers}
+          data={categories}
+          sheetName={"Categorias"}
+          title="Baixar tabela de categorias"
+        />
+      );
+    };
 
     return (
       <div className="AppBackground paddedScreen">
@@ -284,7 +307,7 @@ export default class ManageCategoryView extends Component {
         </Modal>
 
         {categoryTable(categories)}
-        {loading ? <LoadingIcon /> : null}
+        {loading ? <LoadingIcon /> : excelDownloadButton()}
       </div>
     );
   }

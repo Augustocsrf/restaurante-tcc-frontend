@@ -1,45 +1,14 @@
 import React from "react";
+
 import "../Styles/App.css";
 import "../Styles/Home.css";
-import axios from "axios";
 
 export default class HomeView extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
   }
 
-  test = async () => {
-    await axios
-      .post(
-        "https://augustotcc.com.br/tc/main.php",
-        JSON.stringify({ id: 3 }),
-        {
-          params: { a: "yay", b: "love" },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        axios.defaults.headers.common["Authorization"] = response.data;
-      });
-  };
-
-  test2 = async () => {
-    await axios
-      .post("https://augustotcc.com.br/tc/testToken.php")
-      .then((response) => {
-        console.log(response);
-      });
-  };
-
   render() {
-    /*return (
-      <div>
-        <button onClick={this.test}>Press</button>
-        <button onClick={this.test2}>Press 2</button>
-      </div>
-    );
-    */
-
     return (
       <div className="App AppBackground">
         <h1>Home Page</h1>
@@ -97,3 +66,29 @@ export default class HomeView extends React.Component {
     );
   }
 }
+
+/**
+ *   test = async () => {
+    await axios
+      .post(
+        "https://augustotcc.com.br/tc/main.php",
+        JSON.stringify({ id: 3 }),
+        {
+          params: { a: "yay", b: "love" },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        axios.defaults.headers.common["Authorization"] = response.data;
+      });
+  };
+
+  test2 = async () => {
+    await axios
+      .post("https://augustotcc.com.br/tc/testToken.php")
+      .then((response) => {
+        console.log(response);
+      });
+  };
+
+ */

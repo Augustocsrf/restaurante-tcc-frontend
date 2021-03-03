@@ -1,4 +1,5 @@
 import React from "react";
+
 import Axios from "axios";
 import { GoogleLogin } from "react-google-login";
 import { USER_PERMISSIONS } from "../DataTypes/User";
@@ -65,8 +66,8 @@ export default class GoogleLoginButton extends React.Component {
         returnUserData = { error: true };
       });
 
-    this.props.loginSuccessful(returnUserData)
-    this.props.stopLoading()
+    this.props.loginSuccessful(returnUserData);
+    this.props.stopLoading();
     return returnUserData;
   }
 
@@ -86,7 +87,7 @@ export default class GoogleLoginButton extends React.Component {
   }
 
   onFailure(res) {
-    this.props.stopLoading()
+    this.props.stopLoading();
     console.log(res);
 
     /*

@@ -5,8 +5,6 @@ div#dataReportView{
 
 section#reportDataTypeSelection {
     height: fit-content;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -14,19 +12,36 @@ section#reportDataTypeSelection {
 }
 
 section#reportDataTypeSelection Button {
-    margin: 10px 0%;
+    padding: 10px 10px;
+    border-radius: 0%;
+    border-bottom: 1px black solid;
 }
 
-section#reportDataTypeSelection Button:first {
-    margin: 0px 0% 10px;
+section#reportDataTypeSelection Button.selectedReport {
+    background-color: #46f746;
 }
 
+section#reportDataTypeSelection Button:hover {
+    /*background: rgba(125, 125, 125, 0.5);*/
+    background-color: #008000AA;
+}
+
+section#reportDataTypeSelection Button:first-of-type {
+    border-top: 1px black solid;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+section#reportDataTypeSelection Button:last-of-type {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
 
 main#dataReportDisplay {
     margin: 0% 2% 0%;
-    height: 300px;
     width: 100%;
-    /*border: 1px solid black;*/
+    background: white;
+    padding: 5% 2%;
 }
 
 @media screen and (max-width: 480px) {
@@ -36,5 +51,6 @@ main#dataReportDisplay {
 
     main#dataReportDisplay {
         margin: 2% 0%;
+        padding: 1% 0%;
     }
 }

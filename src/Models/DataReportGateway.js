@@ -8,7 +8,6 @@ export default class DataReportGateway {
     await api
       .get(reportUrl)
       .then((response) => {
-        console.log(response)
         returnData = response.data;
       })
       .catch((e) => {

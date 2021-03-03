@@ -1,6 +1,8 @@
 import { Component } from "react";
+
 import DatePicker from "react-datepicker";
 import LoadingIcon from "../Components/LoadingIcon";
+
 import "../Styles/Reservation.css";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -92,7 +94,7 @@ export default class ReservationView extends Component {
         return true;
       }
 
-      if (name === '' || lastName === '' || number === undefined) {
+      if (name === "" || lastName === "" || number === undefined) {
         return true;
       }
 

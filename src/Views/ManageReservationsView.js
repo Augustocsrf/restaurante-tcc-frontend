@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+
 import LoadingIcon from "../Components/LoadingIcon";
+
 import "../Styles/ManageReservations.css";
 
 export default class ManageReservationsView extends Component {
@@ -39,7 +41,7 @@ export default class ManageReservationsView extends Component {
   }
 
   async updateReservation(reservation, index) {
-    //Remover item alterado da 
+    //Remover item alterado da
     const { reservations } = this.state;
     reservations.splice(index, 1);
 
@@ -47,7 +49,7 @@ export default class ManageReservationsView extends Component {
 
     let response = await this.props.updateReservation(reservation);
 
-    if(response.error){
+    if (response.error) {
       reservations.splice(index, 0, reservation);
       this.setState({ reservations });
     }
@@ -92,9 +94,13 @@ export default class ManageReservationsView extends Component {
               );
             })}
           </select>
-          <button onClick={() => {
-            this.updateReservation(reservation, index)
-          }}>Confirmar Alterção</button>
+          <button
+            onClick={() => {
+              this.updateReservation(reservation, index);
+            }}
+          >
+            Confirmar Alterção
+          </button>
         </div>
       );
     };

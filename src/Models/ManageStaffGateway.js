@@ -17,7 +17,7 @@ export default class ManageStaffGateway {
   }
 
   async updateStaff(staffData) {
-    var returnData = {error: true};
+    var returnData = { error: true };
 
     await api
       .put("staff/" + staffData.id, staffData)
@@ -46,12 +46,13 @@ export default class ManageStaffGateway {
     return returnData;
   }
 
-  async createStaff(staffData){
+  async createStaff(staffData) {
     var returnData = { error: true };
 
     await api
       .post("staff", staffData)
       .then((response) => {
+        console.log(response);
         returnData = response.data;
       })
       .catch((e) => {

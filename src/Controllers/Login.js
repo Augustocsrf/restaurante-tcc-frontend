@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+
 import { Context } from "../Context/Context";
+
 import LoginView from "../Views/LoginView";
 import LoginGateway from "../Models/LoginGateway";
-import { Redirect } from "react-router-dom";
 
 //Controller da tela de login e registro
 export default class Login extends Component {
@@ -13,7 +15,7 @@ export default class Login extends Component {
 
     //Mandar tela para o topo da página
     window.scrollTo(0, 0);
-    
+
     //Bind funções criadas
     this.handleLogin = this.handleLogin.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
@@ -31,9 +33,7 @@ export default class Login extends Component {
     const gateway = new LoginGateway();
     let response = await gateway.performLogin(loginCredentials);
 
-    console.log(response);
-
-    if(response.error){
+    if (response.error) {
       return false;
     }
 
@@ -43,10 +43,10 @@ export default class Login extends Component {
     return true;
   }
 
-  async googleLogin(googleLoginResult){
+  async googleLogin(googleLoginResult) {
     const { setUser } = this.context;
 
-    if(googleLoginResult.error){
+    if (googleLoginResult.error) {
       return false;
     }
 
@@ -67,7 +67,7 @@ export default class Login extends Component {
       let userData = await gateway.performRegister(registerCredentials);
 
       //Caso haja um erro com o processo (o email já tenha sido cadastrado), retornar false e terminar o processo
-      if(userData.error){
+      if (userData.error) {
         return false;
       }
 

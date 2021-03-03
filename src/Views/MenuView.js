@@ -1,8 +1,10 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
+
 import LoadingIcon from "../Components/LoadingIcon";
 import Modal from "../Components/Modal";
 import ShoppingCart from "../DataTypes/ShoppingCart";
+
 import "../Styles/Menu.css";
 
 //View da página de cardápio

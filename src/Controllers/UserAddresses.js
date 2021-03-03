@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+
 import { Context } from "../Context/Context";
+
 import UserAddressesGateway from "../Models/UserAddressesGateway";
 import UserAddressesView from "../Views/UserAddressesView";
 
@@ -58,9 +60,9 @@ export default class UserAddresses extends Component {
   render() {
     const { user } = this.context;
 
-    //Caso o usuário não tenha nenhum id (o que quer que o usuário não está logado)
-    // Ou se o usuário estiver logado, mas não for um cliente, mandar o usuário para a tela de login ao invés desta
-    if (user.id === 0 || (user.id !== 0 && !user.isUserClient())) {
+    //Verificar se o usuário está logado. Se não estiver, retornar para a página de login
+    if (user.isUserGuest()) {
+      alert("Você precisa estar logado para acessar essa página");
       return <Redirect to="/login" />;
     }
 

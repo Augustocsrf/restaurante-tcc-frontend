@@ -12,14 +12,13 @@ import OrderInformation from "./Controllers/OrderInformation";
 import UserProfile from "./Controllers/UserProfile";
 
 import StaffLogin from "./Controllers/StaffLogin";
-import RegisterStaff from "./Controllers/RegisterStaff";
 import UserAddresses from "./Controllers/UserAddresses";
 import Reservation from "./Controllers/Reservation";
 import OrderConfirm from "./Controllers/OrderConfirm";
 
 import ManageOrders from "./Controllers/ManageOrders";
 import ManageCategories from "./Controllers/ManageCategories";
-import ManageProducts from './Controllers/ManageProducts'
+import ManageProducts from "./Controllers/ManageProducts";
 import ManageReservations from "./Controllers/ManageReservations";
 import ManageStaff from "./Controllers/ManageStaff";
 import DataReport from "./Controllers/DataReport";
@@ -29,7 +28,6 @@ import "./Styles/generic/GenericScreen.css";
 import "./Styles/generic/GenericForm.css";
 import "./Styles/generic/IconsStylization.css";
 import "./Styles/generic/Form.css";
-
 
 export default class App extends Component {
   render() {
@@ -49,12 +47,8 @@ export default class App extends Component {
                 exact
                 component={OrderInformation}
               />
-              <Route
-                path="/pedido/confirmar"
-                exact
-                component={OrderConfirm}
-              />
-              
+              <Route path="/pedido/confirmar" exact component={OrderConfirm} />
+
               <Route path="/perfil" exact component={UserProfile} />
               <Route path="/reserva" exact component={Reservation} />
 
@@ -72,7 +66,7 @@ export default class App extends Component {
                 exact
                 component={ManageReservations}
               />
-    
+
               <Route
                 path="/funcionario/pedidos"
                 exact
@@ -85,23 +79,9 @@ export default class App extends Component {
                 component={ManageCategories}
               />
 
-              <Route
-                path="/admin/funcionarios"
-                exact
-                component={ManageStaff}
-              />
-              <Route
-                path="/admin/cadastrar-funcionario"
-                exact
-                component={RegisterStaff}
-              />
+              <Route path="/admin/funcionarios" exact component={ManageStaff} />
 
-              <Route
-                path="/admin/relatorios"
-                exact
-                component={DataReport}
-              />
-
+              <Route path="/admin/relatorios" exact component={DataReport} />
             </Switch>
 
             <div className="footer">

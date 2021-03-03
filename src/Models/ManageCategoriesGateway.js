@@ -1,4 +1,3 @@
-//import api from "../Components/api";
 import api, { defaultError } from "../Services/api";
 
 export default class ManageCategoriesGateway {
@@ -24,11 +23,9 @@ export default class ManageCategoriesGateway {
       error: true,
     };
 
-
     await api
       .put("categories/" + category.id, category)
       .then((response) => {
-        
         const { data } = response;
 
         returnData = data;
@@ -44,7 +41,6 @@ export default class ManageCategoriesGateway {
     var returnData = {
       error: true,
     };
-
 
     await api
       .delete("categories/" + id)

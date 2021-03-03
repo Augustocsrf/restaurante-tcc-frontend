@@ -1,7 +1,6 @@
-import { Component } from "react";
 import api from "../Services/api";
 
-export default class MenuGateway extends Component {
+export default class MenuGateway {
   async getMenus() {
     var categoryList = [];
 
@@ -18,6 +17,6 @@ export default class MenuGateway extends Component {
         );
       });
 
-      return categoryList;
+    return categoryList;
   }
 }

@@ -1,6 +1,7 @@
 import api, { defaultError } from "../Services/api";
 
 export default class UserProfileGateway {
+  //Obter endereços do usuário
   async getAddresses(userData) {
     var returnData = [];
 
@@ -41,7 +42,7 @@ export default class UserProfileGateway {
 
   //Método para pegar as reservas abertas do cliente
   async getOpenReservationsOfClient(id) {
-    var returnData;
+    var returnData = [];
 
     await api
       .get("clients/" + id + "/open-reservations")
@@ -56,6 +57,7 @@ export default class UserProfileGateway {
     return returnData;
   }
 
+  //Método para cancelar reservas
   async cancelReservation(reservationData) {
     const requestBody = { status: 5 };
     var returnData;
@@ -75,12 +77,53 @@ export default class UserProfileGateway {
     return returnData;
   }
 
+  //Método para cancelar pedido
   async cancelOrder(orderData) {
     const requestBody = { status: 5 };
     var returnData;
 
     await api
       .put("orders/" + orderData.id, requestBody)
+      .then((response) => {
+        const { data } = response;
+        data.error = false;
+        returnData = data;
+      })
+      .catch((e) => {
+        defaultError(e);
+        returnData = { error: true };
+      });
+
+    return returnData;
+  }
+
+  //Método para atualizar o cliente
+  async updateUser(userData){
+    var returnData;
+
+    await api
+      .put("clients/" + userData.id, userData)
+      .then((response) => {
+        const { client } = response.data;
+        
+        client.apiToken = client.api_token;
+
+        returnData = client;
+      })
+      .catch((e) => {
+        defaultError(e);
+        returnData = { error: true };
+      });
+
+    return returnData;
+  }
+
+  //Método para atualizar a senha do usuário
+  async updatePassword(passwordData){
+    var returnData;
+
+    await api
+      .put("clients/" + passwordData.id + "/password", passwordData)
       .then((response) => {
         const { data } = response;
         data.error = false;

@@ -1,4 +1,3 @@
-
 import { USER_PERMISSIONS } from "../DataTypes/User";
 import api, { defaultError } from "../Services/api";
 
@@ -8,10 +7,19 @@ export default class LoginGateway {
     var returnUserData;
 
     await api
-      .post("login/client", userData)
+      //.post("login/client", userData)
+      .post("login", userData)
       .then((response) => {
-        console.log(response.data)
-        const { id, email, name, lastName, phone, api_token: apiToken  } = response.data;
+        console.log(response.data);
+        const {
+          id,
+          email,
+          name,
+          lastName,
+          phone,
+          api_token: apiToken,
+          permission,
+        } = response.data;
 
         const user = {
           id,
@@ -20,16 +28,18 @@ export default class LoginGateway {
           lastName,
           phone,
           apiToken,
-          permission: USER_PERMISSIONS.CLIENT,
+          permission,
+          //permission: USER_PERMISSIONS.CLIENT,
         };
 
-        api.defaults.headers.common["Authorization"] = "Bearer " + response.data.apiToken;
+        api.defaults.headers.common["Authorization"] =
+          "Bearer " + response.data.apiToken;
 
         returnUserData = user;
       })
       .catch((e) => {
         defaultError(e);
-        returnUserData = { error: true }
+        returnUserData = { error: true };
       });
 
     return returnUserData;
@@ -41,7 +51,7 @@ export default class LoginGateway {
     await api
       .post("register", registerData)
       .then((response) => {
-        console.log(response)
+        console.log(response);
         //Obter dados do usuário recebido e traduzir eles para os nomes esperados
         const { id, api_token: apiToken } = response.data;
 
@@ -61,20 +71,27 @@ export default class LoginGateway {
       })
       .catch((e) => {
         defaultError(e);
-        returnUserData = { error: true }
+        returnUserData = { error: true };
       });
 
     return returnUserData;
   }
 
-  async loginGoogle(googleData){
+  async loginGoogle(googleData) {
     var returnUserData;
 
     await api
       .post("login/google", googleData)
       .then((response) => {
-        console.log(response.data)
-        const { id, email, name, lastName, phone, api_token: apiToken  } = response.data;
+        console.log(response.data);
+        const {
+          id,
+          email,
+          name,
+          lastName,
+          phone,
+          api_token: apiToken,
+        } = response.data;
 
         const user = {
           id,
@@ -86,13 +103,14 @@ export default class LoginGateway {
           permission: USER_PERMISSIONS.CLIENT,
         };
 
-        api.defaults.headers.common["Authorization"] = "Bearer " + response.data.apiToken;
+        api.defaults.headers.common["Authorization"] =
+          "Bearer " + response.data.apiToken;
 
         returnUserData = user;
       })
       .catch((e) => {
         defaultError(e);
-        returnUserData = { error: true }
+        returnUserData = { error: true };
       });
 
     return returnUserData;

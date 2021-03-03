@@ -9,7 +9,6 @@ export default class StaffLoginGateway {
       .post("login/staff", requestBody)
       .then((response) => {
         const { data } = response;
-        console.log(response);
 
         //Obter dados do usuário recebido e traduzir eles para os nomes esperados
         const {
@@ -18,7 +17,8 @@ export default class StaffLoginGateway {
           name,
           lastName,
           permission,
-          api_token: apiToken
+          phone,
+          api_token: apiToken,
         } = data;
 
         api.defaults.headers.common["Authorization"] = "Bearer " + apiToken;
@@ -29,16 +29,17 @@ export default class StaffLoginGateway {
           name,
           lastName,
           apiToken,
+          phone,
           permission: permission,
         };
 
-        returnUserData = user;        
+        returnUserData = user;
       })
       .catch((e) => {
         defaultError(e);
 
         returnUserData = {
-          error: true
+          error: true,
         };
       });
 

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+
 import { Context } from "../Context/Context";
+
 import ManageCategoriesGateway from "../Models/ManageCategoriesGateway";
 import ManageCategoryView from "../Views/ManageCategoriesView";
 
@@ -32,17 +34,16 @@ export default class ManageCategories extends Component {
     const gateway = new ManageCategoriesGateway();
     let response = await gateway.deleteCategory(id);
 
-
     return response;
   }
 
-  async updateCategory(category){
+  async updateCategory(category) {
     const gateway = new ManageCategoriesGateway();
     let response = await gateway.updateCategory(category);
 
     return response;
   }
-  
+
   async createCategory(categoryData, successCallback) {
     const gateway = new ManageCategoriesGateway();
     let response = await gateway.createCategory(categoryData);
@@ -53,10 +54,13 @@ export default class ManageCategories extends Component {
   render() {
     const { user } = this.context;
 
+    //Apenas permitir acesso a usuário administrador.
+    // Se um usuário que não for administrador tentar entrar, redirecionar o usuário para outra página
     if (!user.isUserAdmin()) {
-      return <Redirect to="/funcionario/login" />;
-    }    
-   
+      alert("Você não tem permissão para acessar essa página");
+      return <Redirect to="/" />;
+    }
+
     return (
       <ManageCategoryView
         getCategories={this.getCategories}

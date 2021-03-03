@@ -1,8 +1,13 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+
+import { Context } from "../Context/Context";
+
 import ManageStaffView from "../Views/ManageStaffView";
 import ManageStaffGateway from "../Models/ManageStaffGateway";
 
 export default class ManageStaff extends Component {
+  static contextType = Context;
   constructor(props) {
     super(props);
 
@@ -36,14 +41,35 @@ export default class ManageStaff extends Component {
 
   async createStaff(staffData) {
     const gateway = new ManageStaffGateway();
-    const response = await gateway.createStaff(staffData);
+    var response = await gateway.createStaff(staffData);
 
-    console.log(response);
+    if (response.requestConfirmation) {
+      //Pedir confirmação do usuário para adicionar permissão de funcionário para um usuário que já existe
+      const confirmation = window.confirm(response.message);
+
+      //Se o usuário administrador confirmar que quer atualizar o
+      if (confirmation) {
+        staffData.allowUpdate = true;
+
+        response = await gateway.createStaff(staffData);
+      } else {
+        response.error = true;
+      }
+    }
 
     return response;
   }
 
   render() {
+    const { user } = this.context;
+
+    //Apenas permitir acesso a usuário administrador.
+    // Se um usuário que não for administrador tentar entrar, redirecionar o usuário para outra página
+    if (!user.isUserAdmin()) {
+      alert("Você não tem permissão para acessar essa página");
+      return <Redirect to="/" />;
+    }
+
     return (
       <ManageStaffView
         getStaff={this.getStaff}

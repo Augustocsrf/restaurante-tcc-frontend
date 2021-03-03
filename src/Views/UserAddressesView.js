@@ -144,8 +144,8 @@ export default class UserAddressesView extends Component {
             <p>{item.reference}</p>
           </div>
         );
-      })
-    }
+      });
+    };
 
     let modal = () => {
       return (

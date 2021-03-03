@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+
 import { Context } from "../Context/Context";
+
 import StaffLoginForm from "../Views/StaffLoginForm";
 import StaffLoginGateway from "../Models/StaffLoginGateway";
-import { Redirect } from "react-router-dom";
 
 //Controller da tela de login do funcionário
 export default class StaffLogin extends Component {
@@ -13,7 +15,7 @@ export default class StaffLogin extends Component {
 
     //Mandar tela para o topo da página
     window.scrollTo(0, 0);
-    
+
     this.state = {
       logged: false,
     };
@@ -26,7 +28,7 @@ export default class StaffLogin extends Component {
     const gateway = new StaffLoginGateway();
     let userData = await gateway.performLogin(loginCredentials);
 
-    if(!userData.error){
+    if (!userData.error) {
       setUser(userData);
     }
   }
@@ -34,9 +36,10 @@ export default class StaffLogin extends Component {
   render() {
     const { user } = this.context;
 
-    //Verificar se já há um usuário
-    if(!user.isUserClient() && !user.isUserGuest()){
-      return <Redirect to='/funcionario/pedidos'/>
+    //Apenas permitir acesso a usuários que ainda não estão logados.
+    // Se um usuário já está logado, mandar ele automaticamente para a tela de pedidos
+    if (!user.isUserClient() && !user.isUserGuest()) {
+      return <Redirect to="/funcionario/pedidos" />;
     }
 
     return <StaffLoginForm handleLogin={this.handleLogin} />;

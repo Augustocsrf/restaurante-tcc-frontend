@@ -1,7 +1,10 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
+
+import ExportExcel from "../Components/ExportExcel";
 import LoadingIcon from "../Components/LoadingIcon";
 import Modal from "../Components/Modal";
+
 import "../Styles/ManageProducts.css";
 
 //#region Imports de material-ui
@@ -169,7 +172,7 @@ export default class ManageProductsView extends Component {
       items.push(newItem);
     } else {
       this.setState({ loading: true });
-      
+
       const editItem = await this.props.updateItem(itemData);
 
       if (editItem.error) {
@@ -332,7 +335,14 @@ export default class ManageProductsView extends Component {
             </TableHead>
             <TableBody>
               {rows.map((row, index) => (
-                <TableRow key={index} style={ index % 2? { background : "#d1d1d1" }:{ background : "white" }}>
+                <TableRow
+                  key={index}
+                  style={
+                    index % 2
+                      ? { background: "#d1d1d1" }
+                      : { background: "white" }
+                  }
+                >
                   <TableCell component="th" scope="row">
                     {row.name}
                   </TableCell>
@@ -375,6 +385,28 @@ export default class ManageProductsView extends Component {
     };
     //#endregion
 
+    //Botão para baixar um planilha mostrando toda a tabela de produtos
+    const excelDownloadButton = () => {
+      //Colunas que estarão na planilha do excel
+      const headers = [
+        { label: "Nome", value: "name" },
+        { label: "Preço (R$)", value: "price" },
+        { label: "Descrição", value: "description" },
+        { label: "Categoria", value: "category_name" },
+        { label: "Criado em", value: "created_at" },
+        { label: "Atualizado em", value: "updated_at" },
+      ];
+
+      return (
+        <ExportExcel
+          headers={headers}
+          data={items}
+          sheetName={"Produtos"}
+          title="Baixar tabela de produtos"
+        />
+      );
+    };
+
     return (
       <div className="AppBackground paddedScreen">
         <div className="buttonsDiv">
@@ -392,7 +424,7 @@ export default class ManageProductsView extends Component {
         </Modal>
 
         {productTable(items)}
-        {loading ? <LoadingIcon /> : null}
+        {loading ? <LoadingIcon /> : excelDownloadButton()}
       </div>
     );
   }

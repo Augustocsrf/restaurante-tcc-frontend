@@ -1,4 +1,3 @@
-
 const USER_PERMISSIONS = {
   GUEST: 0,
   CLIENT: 1,
@@ -19,8 +18,8 @@ export default class User {
     //Verificar se algo foi enviado, se não, manter os dados vazios (o estado de que nenhum usuário fez login)
     if (userObject !== undefined) {
       this.id = userObject.id;
-      this.name = userObject.name;      
-      this.lastName = userObject.lastName;  
+      this.name = userObject.name;
+      this.lastName = userObject.lastName;
       this.email = userObject.email;
       this.phone = userObject.phone;
       this.apiToken = userObject.apiToken;
@@ -31,27 +30,27 @@ export default class User {
       }
     }
 
-    this.isUserClient = this.isUserClient.bind(this);
-    this.isUserAdmin = this.isUserAdmin.bind(this);
     this.isUserGuest = this.isUserGuest.bind(this);
+    this.isUserClient = this.isUserClient.bind(this);
+    this.isUserStaff = this.isUserStaff.bind(this);
+    this.isUserAdmin = this.isUserAdmin.bind(this);
   }
 
-  isUserGuest(){
+  isUserGuest() {
     return this.permission === USER_PERMISSIONS.GUEST;
   }
 
-  isUserClient(){
+  isUserClient() {
     return this.permission === USER_PERMISSIONS.CLIENT;
   }
 
-  isUserStaff(){
+  isUserStaff() {
     return this.permission === USER_PERMISSIONS.STAFF;
   }
 
-  isUserAdmin(){
+  isUserAdmin() {
     return this.permission === USER_PERMISSIONS.ADMIN;
   }
 }
 
 export { USER_PERMISSIONS };
-

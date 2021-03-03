@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+
 import { Context } from "../Context/Context";
 import LoadingIcon from "../Components/LoadingIcon";
 import GoogleLoginButton from "../Components/GoogleLoginButton";
+
 import "../Styles/Login.css";
 
 export default class LoginView extends Component {
