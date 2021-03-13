@@ -26,6 +26,7 @@ export default class UserProfile extends Component {
 
     this.update = this.update.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
+    this.confirmEmail = this.confirmEmail.bind(this);
   }
 
   async getClientsOpenOrdersAndReservations() {
@@ -90,6 +91,20 @@ export default class UserProfile extends Component {
     }
   }
 
+  async confirmEmail(code) {
+    const { user, setUser } = this.context;
+
+    const gateway = new UserProfileGateway();
+    const response = await gateway.confirmEmail(code);
+
+    // Caso a atualização tenha ocorrido com sucesso, atualizar os valores do usuário localmente com os valores recebidos
+    if (!response.error) {
+      setUser({ ...user, email_verified_at: response.email_verified_at });
+    }
+
+    return response;
+  }
+
   logout() {
     const { setUser } = this.context;
     setUser();
@@ -142,6 +157,7 @@ export default class UserProfile extends Component {
         cancelOrder={this.cancelOrder}
         updatePassword={this.updatePassword}
         update={this.update}
+        confirmEmail={this.confirmEmail}
       />
     );
   }

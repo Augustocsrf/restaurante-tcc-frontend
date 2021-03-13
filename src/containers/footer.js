@@ -1,8 +1,10 @@
 import React from "react";
-import "../Styles/footer.css";
 import { Link } from "react-router-dom";
+
 import Footer from "../Components/footer";
 import { Context } from "../Context/Context";
+
+import "../Styles/footer.css";
 
 export function FooterContainer() {
   const { user } = React.useContext(Context);
@@ -13,7 +15,8 @@ export function FooterContainer() {
     const isUserClient = user.isUserClient();
     const isUserGuest = user.isUserGuest();
 
-    if (isUserClient || isUserGuest ) {
+    if (isUserClient || isUserGuest) {
+      /*
       return (
         <Footer.Column>
           <Footer.Title>Funcionário</Footer.Title>
@@ -23,6 +26,7 @@ export function FooterContainer() {
           </Link>
         </Footer.Column>
       );
+      */
     } else {
       return (
         <Footer.Column>
@@ -72,9 +76,41 @@ export function FooterContainer() {
 
           <Footer.Column>
             <Footer.Title>Social</Footer.Title>
-            <Footer.Link href="#">Instagram</Footer.Link>
-            <Footer.Link href="#">Facebook</Footer.Link>
-            <Footer.Link href="#">Twitter</Footer.Link>
+            <Footer.Link>
+              <a
+                href="https://www.instagram.com/"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <i
+                  className="fab fa-instagram"
+                  style={{ marginRight: "2%" }}
+                ></i>
+                Instagram
+              </a>
+            </Footer.Link>
+
+            <Footer.Link>
+              <a
+                href="https://www.facebook.com/"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <i
+                  className="fab fa-facebook"
+                  style={{ marginRight: "2%" }}
+                ></i>
+                Instagram
+              </a>
+            </Footer.Link>
+
+            <Footer.Link href="#">
+              <a
+                href="https://www.twitter.com/"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <i className="fab fa-twitter" style={{ marginRight: "2%" }}></i>
+                Twitter
+              </a>
+            </Footer.Link>
           </Footer.Column>
 
           {staffColumn()}

@@ -230,38 +230,40 @@ export default class MenuView extends Component {
     }
 
     return (
-      <div className="detailedList AppBackground">
-        <dl>
-          {this.state.category.map((category, index) => {
-            if (category.items.length === 0) {
-              return null;
-            }
+      <div className="AppBackground">
+        <div className="detailedList">
+          <dl>
+            {this.state.category.map((category, index) => {
+              if (category.items.length === 0) {
+                return null;
+              }
 
-            let itemList = category.items.map((item, index) => {
-              return (
-                <div className="menuItem" key={index}>
-                  <i
-                    className="addIcon fas fa-plus"
-                    onClick={() => this.showModal(item)}
-                  ></i>
+              let itemList = category.items.map((item, index) => {
+                return (
+                  <div className="menuItem" key={index}>
+                    <i
+                      className="addIcon fas fa-plus"
+                      onClick={() => this.showModal(item)}
+                    ></i>
 
-                  <div className="detailedListItem">
-                    <dt>{item.name}</dt>
-                    <dd className="price">R${item.price}</dd>
-                    <dd className="ingredients">{item.description}</dd>
+                    <div className="detailedListItem">
+                      <dt>{item.name}</dt>
+                      <dd className="price">R${item.price}</dd>
+                      <dd className="ingredients">{item.description}</dd>
+                    </div>
                   </div>
+                );
+              });
+
+              return (
+                <div key={index}>
+                  <h1 className="categoryName">{category.name}</h1>
+                  {itemList}
                 </div>
               );
-            });
-
-            return (
-              <div key={index}>
-                <h1 className="categoryName">{category.name}</h1>
-                {itemList}
-              </div>
-            );
-          })}
-        </dl>
+            })}
+          </dl>
+        </div>
 
         <Modal show={this.state.showModal}>{modal()}</Modal>
 

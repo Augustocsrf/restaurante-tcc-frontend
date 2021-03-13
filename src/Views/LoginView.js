@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { Context } from "../Context/Context";
 import LoadingIcon from "../Components/LoadingIcon";
+import Modal from "../Components/Modal";
 import GoogleLoginButton from "../Components/GoogleLoginButton";
 
 import "../Styles/Login.css";
@@ -22,6 +23,10 @@ export default class LoginView extends Component {
     phone: "",
     name: "",
     lastName: "",
+
+    //Váriaveis para recuperação de senha
+    showModal: false,
+    passwordRecoverStatus: 0,
   };
 
   constructor(props) {
@@ -31,6 +36,17 @@ export default class LoginView extends Component {
     this.handleRegister = this.handleRegister.bind(this);
   }
 
+  //#region Alterar display do Modal
+  showModal() {
+    this.setState({ showModal: true });
+  }
+
+  hideModal() {
+    this.setState({ showModal: false });
+  }
+  //#endregion
+
+  //#region Métodos para login e registro
   async handleLogin(e) {
     e.preventDefault();
 
@@ -78,9 +94,10 @@ export default class LoginView extends Component {
 
     this.setState({ loading: false });
   }
+  //#endregion
 
   render() {
-    const { loading } = this.state;
+    const { loading, showModal, hideModal, passwordRecoverStatus } = this.state;
 
     const startLoading = () => {
       this.setState({ loading: true });
@@ -90,8 +107,57 @@ export default class LoginView extends Component {
       this.setState({ loading: false });
     };
 
+    const modal = () => {
+      switch (passwordRecoverStatus) {
+        case 0:
+          //No caso 0, o cliente pede uma senha, informando um email
+          return (
+            <div className="row">
+              {/** Formulário para que o administrador cadastre um usuário */}
+              <form onSubmit={this.submit} className="genericForm">
+                <div className="form-group">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Nome da Categoria"
+                    required
+                    value={this.state.name}
+                    onChange={(e) => {
+                      this.setState({ name: e.target.value });
+                    }}
+                  />
+                </div>
+
+                <button
+                  className="submit-btn"
+                  type="submit"
+                  disabled={this.state.loading}
+                >
+                  Requisitar código
+                </button>
+
+                <button
+                  className="submit-btn cancel-btn"
+                  type="reset"
+                  onClick={hideModal}
+                >
+                  Cancelar
+                </button>
+              </form>
+            </div>
+          );
+
+        default:
+          break;
+      }
+    };
+
     return (
       <div className="App AppBackground">
+        <Modal show={showModal} handleClose={hideModal}>
+          {modal()}
+        </Modal>
+
         <div className="row">
           {/** Formulário para que o cliente realize login */}
           <form onSubmit={this.handleLogin} className="login-form">

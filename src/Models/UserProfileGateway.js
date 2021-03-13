@@ -98,14 +98,14 @@ export default class UserProfileGateway {
   }
 
   //Método para atualizar o cliente
-  async updateUser(userData){
+  async updateUser(userData) {
     var returnData;
 
     await api
       .put("clients/" + userData.id, userData)
       .then((response) => {
         const { client } = response.data;
-        
+
         client.apiToken = client.api_token;
 
         returnData = client;
@@ -119,7 +119,7 @@ export default class UserProfileGateway {
   }
 
   //Método para atualizar a senha do usuário
-  async updatePassword(passwordData){
+  async updatePassword(passwordData) {
     var returnData;
 
     await api
@@ -127,6 +127,25 @@ export default class UserProfileGateway {
       .then((response) => {
         const { data } = response;
         data.error = false;
+        returnData = data;
+      })
+      .catch((e) => {
+        defaultError(e);
+        returnData = { error: true };
+      });
+
+    return returnData;
+  }
+
+  //Método para confirmar o email
+  async confirmEmail(code) {
+    var returnData;
+
+    await api
+      .put("confirm-email-user", { code })
+      .then((response) => {
+        const { data } = response;
+
         returnData = data;
       })
       .catch((e) => {

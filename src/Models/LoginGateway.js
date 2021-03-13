@@ -7,7 +7,6 @@ export default class LoginGateway {
     var returnUserData;
 
     await api
-      //.post("login/client", userData)
       .post("login", userData)
       .then((response) => {
         console.log(response.data);
@@ -19,6 +18,7 @@ export default class LoginGateway {
           phone,
           api_token: apiToken,
           permission,
+          email_verified_at,
         } = response.data;
 
         const user = {
@@ -29,7 +29,7 @@ export default class LoginGateway {
           phone,
           apiToken,
           permission,
-          //permission: USER_PERMISSIONS.CLIENT,
+          email_verified_at,
         };
 
         api.defaults.headers.common["Authorization"] =
@@ -53,7 +53,7 @@ export default class LoginGateway {
       .then((response) => {
         console.log(response);
         //Obter dados do usuário recebido e traduzir eles para os nomes esperados
-        const { id, api_token: apiToken } = response.data;
+        const { id, api_token: apiToken, email_verified_at } = response.data;
 
         const { email, name, lastName, phone } = registerData;
 
@@ -65,6 +65,7 @@ export default class LoginGateway {
           phone,
           apiToken,
           permission: USER_PERMISSIONS.CLIENT,
+          email_verified_at,
         };
 
         returnUserData = user;

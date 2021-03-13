@@ -1,0 +1,42 @@
+#excelTableIcon {
+  margin-right: 5%;
+}
+
+button#downloadExcelButton {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  align-items: center;
+  justify-content: center;
+  background-color: #008000;
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  padding: auto;
+  font-size: 15px;
+  width: 25%;
+  text-transform: capitalize;
+  transition: all 0.3s ease-in-out;
+}
+
+button#downloadExcelButton:hover {
+  transition: all 0.3s ease-in-out;
+  background-color: #28ae1c;
+}
+
+@media screen and (max-width: 1120px) {
+  button#downloadExcelButton {
+    width: 30%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  button#downloadExcelButton {
+    width: 100%;
+  }
+}

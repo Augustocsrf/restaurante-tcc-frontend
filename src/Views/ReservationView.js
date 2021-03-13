@@ -5,15 +5,18 @@ import LoadingIcon from "../Components/LoadingIcon";
 
 import "../Styles/Reservation.css";
 import "react-datepicker/dist/react-datepicker.css";
+import { formatOnlyHours, minTwoDigits } from "../Services/FormatterFunctions";
 
 export default class ReservationView extends Component {
   state = {
     date: undefined,
+    time: undefined,
     name: this.props.user.name,
     lastName: this.props.user.lastName,
     number: 1,
 
     excludedDates: [],
+    occupation: [],
 
     loading: false,
   };
@@ -27,14 +30,6 @@ export default class ReservationView extends Component {
 
   componentDidMount() {
     this.getBusyDates();
-
-    /*
-    //Fazer hora da data inicial 18:00
-    let { date } = this.state;
-    date.setHours(18);
-    date.setMinutes(0);
-    this.setState({ date });
-    */
   }
 
   async makeReservation(e) {
@@ -42,16 +37,18 @@ export default class ReservationView extends Component {
 
     e.preventDefault();
 
-    const { date, name, lastName, number } = this.state;
+    const { date, time, name, lastName, number } = this.state;
 
     let reservationData = {
       day:
         date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
-      time: date.getHours() + ":" + date.getMinutes(),
+      time,
       name,
       lastName,
       guests: number,
     };
+
+    console.log(time);
 
     await this.props.makeReservation(reservationData);
 
@@ -62,12 +59,12 @@ export default class ReservationView extends Component {
 
   //Método para obter os dias ocupados do restaurante
   async getBusyDates() {
-    const busyDays = await this.props.getBusyDays();
+    const occupation = await this.props.getBusyDays();
     let excludedDates = [];
 
     //Para cada dia em que todas as 4 mesas do restaurante estão ocupadas,
     // Adicionar esse dia para a lista de dias excluidos
-    busyDays.forEach((element) => {
+    occupation.forEach((element) => {
       if (element.occupation >= 0) {
         let date = new Date(element.day);
         let dateAdjusted = new Date(
@@ -78,15 +75,22 @@ export default class ReservationView extends Component {
       }
     });
 
-    this.setState({ excludedDates });
+    this.setState({ excludedDates, occupation });
   }
 
   render() {
     //Criar informações de datas para limitas as informações do cliente
     const currentDate = new Date();
-    const maxTime = new Date().setHours(23);
-    const minTime = new Date().setHours(17);
-    const { loading, date, name, lastName, number } = this.state;
+
+    const {
+      loading,
+      date,
+      time,
+      name,
+      lastName,
+      number,
+      occupation,
+    } = this.state;
 
     //Método para verificar se o botão deve estar ahabilitado para prosseguir
     const isDisabled = () => {
@@ -98,13 +102,51 @@ export default class ReservationView extends Component {
         return true;
       }
 
+      if (time === reservationTimes[0]) {
+        return true;
+      }
+
       return false;
     };
 
     //Método para fazer com que apenas os dias de sexta, sábado e domingo estejam disponíveis
     const isDayAvailable = (date) => {
       const day = date.getDay();
-      return day === 0 || day === 5 || day === 6;
+      return !(day === 1);
+    };
+
+    const selectTime = () => {
+      if (date === undefined) {
+        return null;
+      }
+
+      //Obter a lista de horários em que o restaurante está com ocupação máxima
+      const occupiedTimesAtDate = checkAvailabilityOfDateTime(date, occupation);
+
+      return (
+        <div id="selectionTime">
+          <select
+            id="selectTime"
+            value={time}
+            required
+            onChange={(e) => {
+              this.setState({ time: e.target.value });
+            }}
+          >
+            {reservationTimes.map((rTime, index) => {
+              if (occupiedTimesAtDate.includes(rTime)) {
+                return null;
+              }
+
+              return (
+                <option value={rTime} key={index}>
+                  {rTime}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      );
     };
 
     //Método para garantir que a data informada não
@@ -117,19 +159,16 @@ export default class ReservationView extends Component {
           <DatePicker
             selected={this.state.date}
             onChange={(date) => {
-              this.setState({ date });
+              this.setState({ date, time: reservationTimes[0] });
             }}
             excludeDates={this.state.excludedDates}
-            timeIntervals={60}
             minDate={currentDate}
-            minTime={minTime}
-            maxTime={maxTime}
             filterDate={isDayAvailable}
-            showTimeSelect
-            timeFormat="HH:mm"
-            dateFormat="P HH:mm"
+            dateFormat="dd/MM/yyyy"
             placeholderText="Data da reserva"
           />
+
+          {selectTime()}
 
           {/* Input do nome e sobrenome da pessoa com a reserva*/}
           <input
@@ -187,4 +226,32 @@ export default class ReservationView extends Component {
       </div>
     );
   }
+}
+
+const reservationTimes = [
+  "Selecionar hora",
+  "18:00",
+  "19:00",
+  "20:00",
+  "21:00",
+  "22:00",
+];
+
+function checkAvailabilityOfDateTime(date, occupation) {
+  var occupiedTimes = [];
+  var formatDate =
+    date.getFullYear() +
+    "-" +
+    minTwoDigits(date.getMonth() + 1) +
+    "-" +
+    minTwoDigits(date.getDate());
+
+  occupation.forEach((occupationDate, index) => {
+    if (occupationDate.day === formatDate) {
+      const formattedTime = formatOnlyHours(occupationDate.time);
+      occupiedTimes.push(formattedTime);
+    }
+  });
+
+  return occupiedTimes;
 }

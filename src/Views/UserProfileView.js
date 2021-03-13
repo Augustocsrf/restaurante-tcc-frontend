@@ -17,6 +17,7 @@ import LoadingIcon from "../Components/LoadingIcon";
 import Modal from "../Components/Modal";
 
 import "../Styles/UserProfile.css";
+import UnconfirmedUserProfileView from "./sub-pages/UnconfirmedUserProfileView";
 
 export default class UserProfileView extends Component {
   state = {
@@ -36,6 +37,8 @@ export default class UserProfileView extends Component {
 
     password: "",
     passwordConfirm: "",
+
+    codeConfirm: "",
   };
 
   constructor(props) {
@@ -180,7 +183,20 @@ export default class UserProfileView extends Component {
   //#endregion
 
   render() {
-    const { user } = this.props;
+    const { user, logout, confirmEmail } = this.props;
+
+    //Verificar se o usuário for confirmado. Se não, o usuário deve ter acesso limitado a informações,
+    // e deve ser esperado informar o código enviado
+    if (!user.isUserConfirmed()) {
+      return (
+        <UnconfirmedUserProfileView
+          logout={logout}
+          user={user}
+          confirmEmail={confirmEmail}
+        />
+      );
+    }
+
     const {
       openOrders,
       openReservations,
@@ -483,7 +499,7 @@ export default class UserProfileView extends Component {
             {reservationList()}
           </div>
 
-          <button id="logout-btn" onClick={() => this.props.logout()}>
+          <button id="logout-btn" onClick={() => logout()}>
             Sair
           </button>
         </div>

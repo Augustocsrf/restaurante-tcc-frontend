@@ -1,15 +1,15 @@
 import React, { Component, createContext } from "react";
 import ShoppingCart from "../DataTypes/ShoppingCart";
-import User from '../DataTypes/User'
-import { retrieveSavedUser, saveCredentials } from '../Services/authentication';
+import User from "../DataTypes/User";
+import { retrieveSavedUser, saveCredentials } from "../Services/authentication";
 
 const Context = createContext({
   user: new User(),
   setUser: () => {},
 });
 
-const UserProvider = Context.Provider
-const UserConsumer = Context.Consumer
+const UserProvider = Context.Provider;
+const UserConsumer = Context.Consumer;
 
 class UserContext extends Component {
   state = {
@@ -18,7 +18,8 @@ class UserContext extends Component {
   };
 
   setUser = (userData) => {
-    if(userData === undefined){
+    console.log(userData);
+    if (userData === undefined) {
       this.setState({ user: new User() });
     } else {
       saveCredentials(userData);
@@ -27,12 +28,12 @@ class UserContext extends Component {
   };
 
   setShoppingCart = (cart) => {
-    this.setState({ cart })
-  }
+    this.setState({ cart });
+  };
 
   emptyShoppingCart = () => {
-    this.setState({ cart: new ShoppingCart() })
-  }
+    this.setState({ cart: new ShoppingCart() });
+  };
 
   render() {
     const { setUser, setShoppingCart, emptyShoppingCart } = this;
@@ -41,7 +42,7 @@ class UserContext extends Component {
       ...this.state,
       setUser,
       setShoppingCart,
-      emptyShoppingCart
+      emptyShoppingCart,
     };
 
     const children = this.props.children;

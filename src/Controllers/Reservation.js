@@ -40,9 +40,9 @@ export default class Reservation extends Component {
 
   async getBusyDays() {
     const gateway = new ReservationGateway();
-    const responseData = await gateway.getBusyDates();
+    const response = await gateway.getBusyDates();
 
-    return responseData;
+    return response;
   }
 
   render() {

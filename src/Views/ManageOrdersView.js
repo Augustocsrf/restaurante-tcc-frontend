@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import LoadingIcon from "../Components/LoadingIcon";
+import { formatDateTime } from "../Services/FormatterFunctions";
 
 //#region Importação de Material-UI
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,11 +18,12 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+
 //#endregion
 
 export default class ManageOrdersView extends Component {
   state = {
-    loading: true,
+    loading: false,
 
     orders: [],
     ordersStatus: [],
@@ -38,35 +40,59 @@ export default class ManageOrdersView extends Component {
   componentDidMount() {
     this.getOpenOrders();
     this.getOrderStatus();
-
-    this.setState({ loading: false });
   }
 
   //Método para obter os pedidos em aberto
   async getOpenOrders() {
+    this.setState({ loading: true });
+
     const orders = await this.props.getOpenOrders();
-    console.log(orders)
     this.setState({ orders });
   }
 
   //Método para obter os status dos pedidos
   async getOrderStatus() {
     const ordersStatus = await this.props.getOrdersStatuses();
-    this.setState({ ordersStatus });
+    this.setState({ ordersStatus, loading: false });
   }
 
   //Método para atualizar os pedidos
-  async updateOrder(order) {
-    console.log(order);
+  async updateOrder(order, index) {
+    const { orders } = this.state;
 
     let orderData = {
       id: order.id,
-      status: order.order_status_id
+      status: order.order_status_id,
+    };
+
+    //Caso o usuário esteja cancelando ou finalizando pedido, pedir confirmaçãoantes de prosseguir
+    if (orderData.status === "5" || orderData.status === "6") {
+      const alteration = orderData.status === "5" ? "cancelar" : "finalizar";
+      const confirmation = window.confirm(
+        "Você tem certeza que quer " + alteration + " este pedido?"
+      );
+
+      if (confirmation) {
+        orders[index].loading = true;
+        this.setState({ orders });
+
+        await this.props.updateOrder(orderData);
+
+        orders.splice(index, 1);
+
+        this.setState({ orders });
+      }
+    } else {
+      //Caso a alteração não finalize o pedido, simplesmente prosseguir com a alteração
+      orders[index].order_status_id = order.order_status_id;
+      orders[index].loading = true;
+      this.setState({ orders });
+
+      await this.props.updateOrder(orderData);
+
+      orders[index].loading = false;
+      this.setState({ orders });
     }
-    
-    const response = await this.props.updateOrder(orderData);
-    
-    console.log(response);
   }
 
   render() {
@@ -74,6 +100,9 @@ export default class ManageOrdersView extends Component {
 
     //Componente que forma o select com os status recebidos
     const selectStatus = (order, index) => {
+      if (order.loading) {
+        return <LoadingIcon />;
+      }
       return (
         <select
           className="selectCategoryStatus"
@@ -94,7 +123,7 @@ export default class ManageOrdersView extends Component {
       );
     };
 
-    //Componente que forma a tabela com os pedidos 
+    //Componente que forma a tabela com os pedidos
     const CollapsibleTable = (rows) => {
       return (
         <TableContainer component={Paper}>
@@ -111,19 +140,24 @@ export default class ManageOrdersView extends Component {
             </TableHead>
             <TableBody>
               {rows.map((row, index) => (
-                <Row key={index} row={row} index={index} selectStatus={selectStatus(row, index)}/>
+                <Row
+                  key={index}
+                  row={row}
+                  index={index}
+                  selectStatus={selectStatus(row, index)}
+                />
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       );
-    }
+    };
 
     return (
       <div className="App AppBackground paddedScreen">
         {CollapsibleTable(orders)}
 
-        {loading ? <LoadingIcon /> : null}
+        <LoadingIcon loading={loading} />
       </div>
     );
   }
@@ -142,29 +176,24 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
-  const {
-    address,
-    address_id,
-  } = row;
+  const { address, address_id } = row;
 
   //Caso o endereço não esteja nulo, preparar o texto com a indicação do texto
   let addressText = "";
 
   if (address_id != null) {
     const { identification, number, street, district } = address;
-    addressText = identification + " (" + street + ", " + district + ", " + number + ")";
+    addressText =
+      identification + " (" + street + ", " + district + ", " + number + ")";
   } else {
     addressText = "Endereço informado foi deletado";
   }
 
-  const date = new Date(row.created_at);
-  const created = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
-
   return (
     <React.Fragment>
-      <TableRow 
+      <TableRow
         className={classes.root}
-        style ={ index % 2? { background : "#d1d1d1" }:{ background : "white" }}
+        style={index % 2 ? { background: "#d1d1d1" } : { background: "white" }}
       >
         <TableCell>
           <IconButton
@@ -178,11 +207,17 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row.name}
         </TableCell>
-        <TableCell >{row.price.toFixed(2)}</TableCell>
-        <TableCell >{row.payment_method === 1 ? "Pagar com cartão" : "R$ " + row.cash.toFixed(2)}</TableCell>
-        <TableCell >{row.delivery_method === 1 ? addressText : "Cliente pegará no local"}</TableCell>
-        <TableCell >{created}</TableCell>
-        <TableCell >{selectStatus}</TableCell>
+        <TableCell>{row.price.toFixed(2)}</TableCell>
+        <TableCell>
+          {row.payment_method === 1
+            ? "Pagar com cartão"
+            : "R$ " + row.cash.toFixed(2)}
+        </TableCell>
+        <TableCell>
+          {row.delivery_method === 1 ? addressText : "Cliente pegará no local"}
+        </TableCell>
+        <TableCell>{formatDateTime(row.created_at)}</TableCell>
+        <TableCell>{selectStatus}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -202,15 +237,20 @@ function Row(props) {
                 </TableHead>
                 <TableBody>
                   {row.items.map((item, index) => (
-                    <TableRow key={index} style={ index % 2? { background : "#d1d1d1" }:{ background : "white" }} >
+                    <TableRow
+                      key={index}
+                      style={
+                        index % 2
+                          ? { background: "#d1d1d1" }
+                          : { background: "white" }
+                      }
+                    >
                       <TableCell component="th" scope="row">
                         {item.name}
                       </TableCell>
                       <TableCell>{item.quantity}</TableCell>
-                      <TableCell >{item.comment}</TableCell>
-                      <TableCell >
-                        {item.price}
-                      </TableCell>
+                      <TableCell>{item.comment}</TableCell>
+                      <TableCell>{item.price}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -225,5 +265,5 @@ function Row(props) {
 
 Row.propTypes = {
   row: PropTypes.object,
-  index: PropTypes.number
+  index: PropTypes.number,
 };

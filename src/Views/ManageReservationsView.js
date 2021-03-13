@@ -20,15 +20,13 @@ export default class ManageReservationsView extends Component {
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
-
     this.getReservations();
     this.getReservationStatuses();
-
-    this.setState({ loading: false });
   }
 
   async getReservations() {
+    this.setState({ loading: true });
+
     const reservations = await this.props.getReservations();
 
     this.setState({ reservations });
@@ -37,7 +35,7 @@ export default class ManageReservationsView extends Component {
   async getReservationStatuses() {
     const reservationStatuses = await this.props.getReservationStatuses();
 
-    this.setState({ reservationStatuses });
+    this.setState({ reservationStatuses, loading: false });
   }
 
   async updateReservation(reservation, index) {
