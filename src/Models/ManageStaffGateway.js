@@ -52,7 +52,6 @@ export default class ManageStaffGateway {
     await api
       .post("staff", staffData)
       .then((response) => {
-        console.log(response);
         returnData = response.data;
       })
       .catch((e) => {

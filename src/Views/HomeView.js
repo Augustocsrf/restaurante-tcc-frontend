@@ -6,6 +6,7 @@ import "../Styles/Home.css";
 export default class HomeView extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
+    document.title = "Restaurante TC";
   }
 
   render() {
@@ -16,49 +17,34 @@ export default class HomeView extends React.Component {
         <div className="rowInfo">
           <img
             src="https://img.huffingtonpost.com/asset/5d40b0c0260000b00f045df4.jpeg"
-            alt="Girl in a jacket"
-            width="300"
-            height="300"
+            alt="Carne"
+            width="200"
+            height="200"
           ></img>
 
           <div className="rowText">
             <h3>Novo Corte de Carne!</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-              in purus id tortor mattis vestibulum. Curabitur tellus odio,
-              congue a nisi in, scelerisque fringilla quam. Nam vitae luctus mi,
-              sit amet congue est. Suspendisse potenti. Pellentesque hendrerit
-              mauris ac dignissim pulvinar. Praesent laoreet condimentum
-              pulvinar. Maecenas rutrum enim dui, nec eleifend nisi tempor nec.
-              Curabitur commodo dapibus diam, non pulvinar nunc varius et. Nulla
-              eleifend ac nunc eget rutrum. Maecenas eu luctus augue. Integer
-              ornare erat justo, in suscipit urna facilisis et. Duis eu elit a
-              risus fermentum cursus.
+              Venha provar o nosso novo prato de Churrasco de Picanha por R$
+              50,00!
             </p>
           </div>
         </div>
 
         <div className="rowInfo reverseRow">
           <img
-            src="https://img.huffingtonpost.com/asset/5d40b0c0260000b00f045df4.jpeg"
-            alt="Girl in a jacket"
-            width="300"
-            height="300"
+            // src="https://img.huffingtonpost.com/asset/5d40b0c0260000b00f045df4.jpeg"
+            src="https://s2.glbimg.com/ALYlmLC3Y4JiF10nvoWU575IdWZYystt0socr-vcW15Ioz-HdGixxa_8qOZvMp3w/e.glbimg.com/og/ed/f/original/2013/08/26/top_10_restaurante_industrial_03.jpg"
+            alt="Restaurante"
+            width="200"
+            height="200"
           ></img>
 
           <div className="rowText">
-            <h3>Novo Corte de Carne!</h3>
+            <h3>Faça a sua Reserva!</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam
-              in purus id tortor mattis vestibulum. Curabitur tellus odio,
-              congue a nisi in, scelerisque fringilla quam. Nam vitae luctus mi,
-              sit amet congue est. Suspendisse potenti. Pellentesque hendrerit
-              mauris ac dignissim pulvinar. Praesent laoreet condimentum
-              pulvinar. Maecenas rutrum enim dui, nec eleifend nisi tempor nec.
-              Curabitur commodo dapibus diam, non pulvinar nunc varius et. Nulla
-              eleifend ac nunc eget rutrum. Maecenas eu luctus augue. Integer
-              ornare erat justo, in suscipit urna facilisis et. Duis eu elit a
-              risus fermentum cursus.
+              Estamos aberto das 18h à meia-noite. Faça a sua reserva e guarde
+              seu lugar conosco de terça a domingo!
             </p>
           </div>
         </div>
@@ -66,29 +52,3 @@ export default class HomeView extends React.Component {
     );
   }
 }
-
-/**
- *   test = async () => {
-    await axios
-      .post(
-        "https://augustotcc.com.br/tc/main.php",
-        JSON.stringify({ id: 3 }),
-        {
-          params: { a: "yay", b: "love" },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        axios.defaults.headers.common["Authorization"] = response.data;
-      });
-  };
-
-  test2 = async () => {
-    await axios
-      .post("https://augustotcc.com.br/tc/testToken.php")
-      .then((response) => {
-        console.log(response);
-      });
-  };
-
- */

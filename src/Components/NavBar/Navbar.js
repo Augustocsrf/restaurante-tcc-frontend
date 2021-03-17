@@ -20,10 +20,7 @@ class Navbar extends Component {
 
     return (
       <nav className="NavbarItems">
-        <Link
-          to='/'
-          className="navbar-text"
-        >
+        <Link to="/" className="navbar-text">
           <h1>Restaurante TCC</h1>
         </Link>
 
@@ -36,11 +33,16 @@ class Navbar extends Component {
         <ul className={this.state.clicked ? "nav-menu active" : "nav-menu"}>
           {MenuItems.map((item, index) => {
             //Se o usuário for um cliente e estiver logado, mostrar um link para o cliente ao invés de um link para a tela de login
-            if (index === MenuItems.length - 1 && (user.id !== 0)) {
+            if (index === MenuItems.length - 1 && user.id !== 0) {
               return (
                 <li key={index}>
                   <Link
-                    className={ProfileLink.cName}
+                    // className={ProfileLink.cName}
+                    className={
+                      this.state.clicked
+                        ? ProfileLink.cName
+                        : ProfileLink.cName + " inactive"
+                    }
                     to={ProfileLink.url}
                     onClick={this.handleClick}
                   >
@@ -52,7 +54,10 @@ class Navbar extends Component {
               return (
                 <li key={index}>
                   <Link
-                    className={item.cName}
+                    //className={item.cName}
+                    className={
+                      this.state.clicked ? item.cName : item.cName + " inactive"
+                    }
                     to={item.url}
                     onClick={this.handleClick}
                   >

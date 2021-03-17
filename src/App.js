@@ -30,6 +30,10 @@ import "./Styles/generic/IconsStylization.css";
 import "./Styles/generic/Form.css";
 
 export default class App extends Component {
+  componentDidMount() {
+    document.title = "Restaurante TC";
+  }
+
   render() {
     return (
       <div className="appBase">
@@ -57,11 +61,6 @@ export default class App extends Component {
               {/* Rotas do lado do Funcionário/Administrador */}
               <Route path="/funcionario/login" exact component={StaffLogin} />
               <Route
-                path="/funcionario/produtos"
-                exact
-                component={ManageProducts}
-              />
-              <Route
                 path="/funcionario/reservas"
                 exact
                 component={ManageReservations}
@@ -73,8 +72,10 @@ export default class App extends Component {
                 component={ManageOrders}
               />
 
+              <Route path="/admin/produtos" exact component={ManageProducts} />
+
               <Route
-                path="/funcionario/categorias"
+                path="/admin/categorias"
                 exact
                 component={ManageCategories}
               />

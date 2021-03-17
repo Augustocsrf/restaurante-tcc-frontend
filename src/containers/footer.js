@@ -4,32 +4,22 @@ import { Link } from "react-router-dom";
 import Footer from "../Components/footer";
 import { Context } from "../Context/Context";
 
-import "../Styles/footer.css";
+import "../Components/footer/styles/footer.css";
 
 export function FooterContainer() {
   const { user } = React.useContext(Context);
 
   //Verificar se o usuário é cliente. Caso ele seja, mostrar a opção de logar como funcionário,
   // se não, mostrar as opçõesd e navegação de funcionário
-  let staffColumn = () => {
-    const isUserClient = user.isUserClient();
-    const isUserGuest = user.isUserGuest();
+  let staffColumn = (mobile) => {
+    const isUserStaff = user.isUserStaff();
+    const isUserAdmin = user.isUserAdmin();
 
-    if (isUserClient || isUserGuest) {
-      /*
+    if (isUserStaff || isUserAdmin) {
       return (
-        <Footer.Column>
-          <Footer.Title>Funcionário</Footer.Title>
-
-          <Link className="routeLink" to="/funcionario/login">
-            <Footer.Link href="#">Entrar </Footer.Link>
-          </Link>
-        </Footer.Column>
-      );
-      */
-    } else {
-      return (
-        <Footer.Column>
+        <Footer.Column
+          id={mobile ? "mobileStaffFooterColumn" : "desktopStaffFooterColumn"}
+        >
           <Footer.Title>Funcionário</Footer.Title>
 
           <Link className="routeLink" to="/funcionario/pedidos">
@@ -42,9 +32,9 @@ export function FooterContainer() {
           {
             //Adicionar opções exclusivas de administrador como editar cardápio e gerenciar funcionários
             // caso o usuário tenha permissão de administrador
-            user.isUserAdmin() ? (
+            isUserAdmin ? (
               <div>
-                <Link className="routeLink" to="/funcionario/produtos">
+                <Link className="routeLink" to="/admin/produtos">
                   <Footer.Link>Produtos</Footer.Link>
                 </Link>
 
@@ -67,6 +57,7 @@ export function FooterContainer() {
     <Footer>
       <Footer.Wrapper>
         <Footer.Row>
+          {staffColumn(true)}
           <Footer.FirstColumn>
             <Footer.Title>Restaurante TCC</Footer.Title>
             <p>Rua A, num; Bairro. Cidade-Estado</p>

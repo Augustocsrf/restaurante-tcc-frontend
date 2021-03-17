@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import LoadingIcon from "../Components/LoadingIcon";
 import Modal from "../Components/Modal";
 import ShoppingCart from "../DataTypes/ShoppingCart";
+import { formatMoney } from "../Services/FormatterFunctions";
 
 import "../Styles/Menu.css";
 
@@ -181,7 +182,7 @@ export default class MenuView extends Component {
                   <div className="cartItemRow">
                     <p className="cartItemText">
                       <i
-                        className="removeItemIcon fas fa-minus"
+                        className="removeItemIcon fas fa-times"
                         onClick={() => this.removeItemFromCart(index)}
                       ></i>{" "}
                       {item.quantity}x {item.name}
@@ -248,7 +249,7 @@ export default class MenuView extends Component {
 
                     <div className="detailedListItem">
                       <dt>{item.name}</dt>
-                      <dd className="price">R${item.price}</dd>
+                      <dd className="price">R$ {formatMoney(item.price)}</dd>
                       <dd className="ingredients">{item.description}</dd>
                     </div>
                   </div>

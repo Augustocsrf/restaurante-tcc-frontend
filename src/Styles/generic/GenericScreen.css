@@ -3,6 +3,7 @@
 }
 
 .AppBackground {
+  min-height: 50.8vh;
   background-color: rgb(240, 240, 240);
 }
 
@@ -20,7 +21,7 @@
   background-color: #009e60;
   margin: 1% 0% 2% 0%;
   margin-left: 0%;
-  width: 200px;   
+  width: 200px;
   font-family: Arial, Helvetica, sans-serif;
 }
 

@@ -13,8 +13,9 @@ export default class ManageCategories extends Component {
   constructor(props) {
     super(props);
 
-    //Mandar tela para o topo da página
+    //Mandar tela para o topo da página e definir o titulo da página
     window.scrollTo(0, 0);
+    document.title = "Gerenciar Categorias";
 
     this.getCategories = this.getCategories.bind(this);
     this.deleteCategory = this.deleteCategory.bind(this);

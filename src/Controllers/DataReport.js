@@ -8,12 +8,12 @@ import DataReportGateway, { REPORTS } from "../Models/DataReportGateway";
 
 export default class DataReport extends Component {
   static contextType = Context;
-
   constructor(props) {
     super(props);
 
-    //Mandar tela para o topo da página
+    //Mandar tela para o topo da página e definir o titulo da página
     window.scrollTo(0, 0);
+    document.title = "Relatório de Dados";
 
     this.getReport = this.getReport.bind(this);
   }

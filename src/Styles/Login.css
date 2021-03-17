@@ -67,6 +67,16 @@ label {
   justify-content: center;
 }
 
+p#forgotPasswordText {
+  text-decoration: underline;
+  color: #ff2e2a;
+}
+
+p#forgotPasswordText:hover {
+  cursor: pointer;
+  transition: all 250ms ease-in-out;
+}
+
 @media screen and (max-width: 600px) {
   button {
     display: block;

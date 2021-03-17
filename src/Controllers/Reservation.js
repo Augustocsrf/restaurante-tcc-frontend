@@ -11,8 +11,9 @@ export default class Reservation extends Component {
   constructor(props) {
     super(props);
 
-    //Mandar tela para o topo da página
+    //Mandar tela para o topo da página e definir o titulo da página
     window.scrollTo(0, 0);
+    document.title = "Reserva";
 
     this.makeReservation = this.makeReservation.bind(this);
     this.getBusyDays = this.getBusyDays.bind(this);

@@ -1,5 +1,8 @@
 import { Component } from "react";
+
+import LoadingIcon from "../Components/LoadingIcon";
 import Modal from "../Components/Modal";
+
 import "../Styles/UserAddresses.css";
 
 export default class UserAddressesView extends Component {
@@ -14,6 +17,7 @@ export default class UserAddressesView extends Component {
     identification: "",
 
     showModal: false,
+    loading: false,
 
     addresses: [],
   };
@@ -33,24 +37,33 @@ export default class UserAddressesView extends Component {
   }
 
   async getAddresses() {
+    this.setState({ loading: true });
+
     let addresses = await this.props.getAddresses();
 
-    this.setState({ addresses });
+    this.setState({ addresses, loading: false });
   }
 
   async deleteAddress(id, index) {
-    let { addresses } = this.state;
-    let deletedAddress = addresses[index];
-    addresses.splice(index, 1);
+    //Pedir confirmação do usuário para remover permissão de um funcionário
+    const confirmation = window.confirm(
+      "Você tem certeza que quer deletar esse endereço?"
+    );
 
-    this.setState({ addresses });
+    if (confirmation) {
+      let { addresses } = this.state;
+      let deletedAddress = addresses[index];
+      addresses.splice(index, 1);
 
-    let response = await this.props.deleteAddress(id);
-
-    //Caso haja um erro, colocar o endereço deletado de volta no lugar
-    if (response.error) {
-      addresses.splice(index, 0, deletedAddress);
       this.setState({ addresses });
+
+      let response = await this.props.deleteAddress(id);
+
+      //Caso haja um erro, colocar o endereço deletado de volta no lugar
+      if (response.error) {
+        addresses.splice(index, 0, deletedAddress);
+        this.setState({ addresses });
+      }
     }
   }
 
@@ -111,7 +124,7 @@ export default class UserAddressesView extends Component {
   }
 
   render() {
-    const { addresses } = this.state;
+    const { addresses, loading } = this.state;
 
     let addressList = () => {
       return addresses.map((item, index) => {
@@ -166,18 +179,14 @@ export default class UserAddressesView extends Component {
                     maxLength={8}
                     value={this.state.zip}
                     onChange={(e) => {
-                      const { value: zip } = e.target;
-
-                      //Quando o usuário tiver digitado todos os 8 digitos do cep, obter as informações automáticamente
-                      if (zip.length === 8) {
-                      }
-                      this.setState({ zip });
+                      this.setState({ zip: e.target.value });
                     }}
                   />
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" id="input-street-num">
                   <input
+                    id="input-street"
                     type="text"
                     name="street"
                     placeholder="Rua"
@@ -185,6 +194,18 @@ export default class UserAddressesView extends Component {
                     value={this.state.street}
                     onChange={(e) => {
                       this.setState({ street: e.target.value });
+                    }}
+                  />
+
+                  <input
+                    id="input-num"
+                    type="text"
+                    name="number"
+                    placeholder="Nº"
+                    required
+                    value={this.state.number}
+                    onChange={(e) => {
+                      this.setState({ number: e.target.value });
                     }}
                   />
                 </div>
@@ -216,20 +237,9 @@ export default class UserAddressesView extends Component {
                 </div>
               </div>
 
-              <div className="form-column">
-                <div className="form-group">
-                  <input
-                    type="text"
-                    name="number"
-                    placeholder="Numero"
-                    required
-                    value={this.state.number}
-                    onChange={(e) => {
-                      this.setState({ number: e.target.value });
-                    }}
-                  />
-                </div>
+              <div className="form-space" />
 
+              <div className="form-column">
                 <div className="form-group">
                   <input
                     type="text"
@@ -296,7 +306,13 @@ export default class UserAddressesView extends Component {
 
         <Modal show={this.state.showModal}>{modal()}</Modal>
 
-        {addressList()}
+        <LoadingIcon loading={loading} />
+
+        {addresses.length === 0 && !loading ? (
+          <p style={{ margin: "auto" }}>Nenhum endereço cadastrado ainda</p>
+        ) : (
+          addressList()
+        )}
       </div>
     );
   }

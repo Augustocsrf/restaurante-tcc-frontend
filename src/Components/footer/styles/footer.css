@@ -1,0 +1,22 @@
+.routeLink {
+  text-decoration: none;
+  color: white;
+}
+
+#mobileStaffFooterColumn {
+  display: none;
+}
+
+#desktopStaffFooterColumn {
+  display: flex;
+}
+
+@media screen and (max-width: 480px) {
+  #mobileStaffFooterColumn {
+    display: flex;
+  }
+
+  #desktopStaffFooterColumn {
+    display: none;
+  }
+}

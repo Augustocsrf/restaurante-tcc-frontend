@@ -38,8 +38,6 @@ export default class DataReportView extends Component {
 
     const response = await this.props.getReport(reportType);
 
-    console.log(response);
-
     switch (reportType) {
       case REPORTS.ORDERS:
         this.setState({ orderQuantity: response, loading: false });
@@ -128,6 +126,7 @@ export default class DataReportView extends Component {
           />
 
           <ExportExcel
+            center={true}
             headers={headers}
             data={orderQuantity}
             sheetName={"Pedidos Realizados"}
@@ -183,6 +182,7 @@ export default class DataReportView extends Component {
           />
 
           <ExportExcel
+            center={true}
             headers={headers}
             data={revenue}
             sheetName={"Faturamento"}
@@ -237,6 +237,7 @@ export default class DataReportView extends Component {
           />
 
           <ExportExcel
+            center={true}
             headers={headers}
             data={reservationAmount}
             sheetName={"Reservas"}
@@ -286,6 +287,7 @@ export default class DataReportView extends Component {
             rootProps={{ "data-testid": "1" }}
           />
           <ExportExcel
+            center={true}
             headers={headers}
             data={newClients}
             sheetName={"Reservas"}
@@ -337,6 +339,7 @@ export default class DataReportView extends Component {
             rootProps={{ "data-testid": "1" }}
           />
           <ExportExcel
+            center={true}
             headers={headers}
             data={deliveries}
             sheetName={"Reservas"}

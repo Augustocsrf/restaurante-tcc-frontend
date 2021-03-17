@@ -38,7 +38,6 @@ export default class ManageReservationsGateway {
     await api
       .put("reservations/" + reservation.id, requestBody)
       .then((response) => {
-        console.log(response);
         returnData = response.data;
       })
       .catch((e) => {

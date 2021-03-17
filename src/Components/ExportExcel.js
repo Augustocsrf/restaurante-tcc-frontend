@@ -10,7 +10,7 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 export default class ExportExcel extends React.Component {
   render() {
-    const { headers, data, sheetName } = this.props;
+    const { headers, data, sheetName, center } = this.props;
 
     var { element, title } = this.props;
 
@@ -22,8 +22,15 @@ export default class ExportExcel extends React.Component {
     //Caso o elemento informado seja indefinido, criar um botão especifico para baixar o Excel
     if (element === undefined) {
       element = (
-        <button id="downloadExcelButton">
-          <i id="excelTableIcon" class="fas fa-table"></i>
+        <button
+          id="downloadExcelButton"
+          style={{
+            height: 40,
+            marginLeft: center ? "auto" : 0,
+            marginRight: center ? "auto" : 0,
+          }}
+        >
+          <i id="excelTableIcon" className="fas fa-table"></i>
           {title}
         </button>
       );

@@ -31,13 +31,13 @@ export default class ManageOrdersGateway {
     return returnData;
   }
 
-  async updateOrder(orderData){
-    var returnData = {error: true};
+  async updateOrder(orderData) {
+    var returnData = { error: true };
 
     await api
       .put("orders/" + orderData.id, orderData)
       .then((response) => {
-        returnData = response.data;        
+        returnData = response.data;
       })
       .catch((e) => {
         defaultError(e);

@@ -2,7 +2,7 @@ import React from "react";
 
 import Axios from "axios";
 import { GoogleLogin } from "react-google-login";
-import { USER_PERMISSIONS } from "../DataTypes/User";
+// import { USER_PERMISSIONS } from "../DataTypes/User";
 import api, { defaultError } from "../Services/api";
 
 const clientId =
@@ -18,25 +18,27 @@ export default class GoogleLoginButton extends React.Component {
   }
 
   async loginGoogle(googleData) {
+    console.log(googleData);
+
     const {
       email,
       givenName: name,
       familyName: lastName,
       googleId: password,
     } = googleData.profileObj;
+
     const sendData = {
       email,
       name,
       lastName,
       password,
+      googleId: password,
     };
     var returnUserData;
 
     await api
       .post("login/google", sendData)
       .then((response) => {
-        console.log(response.data);
-
         const {
           id,
           email,
@@ -44,6 +46,8 @@ export default class GoogleLoginButton extends React.Component {
           lastName,
           phone,
           api_token: apiToken,
+          email_verified_at,
+          permission,
         } = response.data;
 
         const user = {
@@ -53,11 +57,11 @@ export default class GoogleLoginButton extends React.Component {
           lastName,
           phone,
           apiToken,
-          permission: USER_PERMISSIONS.CLIENT,
+          permission,
+          email_verified_at,
         };
 
-        Axios.defaults.headers.common["Authorization"] =
-          "Bearer " + response.data.apiToken;
+        Axios.defaults.headers.common["Authorization"] = "Bearer " + apiToken;
 
         returnUserData = user;
       })
@@ -72,30 +76,15 @@ export default class GoogleLoginButton extends React.Component {
   }
 
   onSuccess(res) {
-    console.log(res);
-
     if (this.props.onSuccess !== undefined) {
       this.props.onSuccess();
     }
 
     this.loginGoogle(res);
-
-    //console.log('Login Success: currentUser:', res.profileObj);
-    //alert(
-    //`Logged in successfully welcome ${res.profileObj.name} 😍. \n See console for full profile object.`
-    //);
   }
 
   onFailure(res) {
     this.props.stopLoading();
-    console.log(res);
-
-    /*
-        console.log('Login failed: res:', res);
-        alert(
-          `Failed to login. 😢 Please ping this to repo owner twitter.com/sivanesh_fiz`
-        );
-        */
   }
 
   render() {
@@ -116,47 +105,3 @@ export default class GoogleLoginButton extends React.Component {
     );
   }
 }
-
-/*
-
-
-function Login() {
-
-  const 
-
-  async loginGoogle(googleData){
-    var returnUserData;
-
-    await api
-      .post("login/google", googleData)
-      .then((response) => {
-        console.log(response.data)
-        const { id, email, name, lastName, phone, api_token: apiToken  } = response.data;
-
-        const user = {
-          id,
-          email,
-          name,
-          lastName,
-          phone,
-          apiToken,
-          permission: USER_PERMISSIONS.CLIENT,
-        };
-
-        Axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.apiToken;
-
-        returnUserData = user;
-      })
-      .catch((e) => {
-        defaultError(e);
-        returnUserData = { error: true }
-      });
-
-    return returnUserData;
-  }
-
-  
-}
-
-export default Login;
-*/

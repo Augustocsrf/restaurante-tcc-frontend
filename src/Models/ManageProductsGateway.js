@@ -42,7 +42,6 @@ export default class ManageProductsGateway {
     await api
       .post("items", itemData)
       .then((response) => {
-        console.log(response);
         const { data } = response;
         returnData = data;
       })
@@ -59,9 +58,6 @@ export default class ManageProductsGateway {
     await api
       .delete("/items/" + id)
       .then((response) => {
-        console.log(response);
-        //const { data } = response;
-        //returnData = data;
         returnData = true;
       })
       .catch((e) => {

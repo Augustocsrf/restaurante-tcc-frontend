@@ -1,10 +1,8 @@
-
-
 import styled from "styled-components";
 
 export const Container = styled.div`
   padding: 80px 60px;
-  background-color: #FF2E2A;
+  background-color: #ff2e2a;
   box-sizing: border-box;
   margin: 0;
   padding: 2%;
@@ -67,7 +65,7 @@ export const Link = styled.div`
   background-color: none;
 
   &:hover {
-    background-color: #FEA7A6;
+    background-color: #fea7a6;
     transition: all 200ms ease-in-out;
   }
 `;

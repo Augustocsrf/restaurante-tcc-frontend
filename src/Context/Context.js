@@ -18,7 +18,6 @@ class UserContext extends Component {
   };
 
   setUser = (userData) => {
-    console.log(userData);
     if (userData === undefined) {
       this.setState({ user: new User() });
     } else {

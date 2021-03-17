@@ -9,7 +9,6 @@ export default class LoginGateway {
     await api
       .post("login", userData)
       .then((response) => {
-        console.log(response.data);
         const {
           id,
           email,
@@ -51,7 +50,6 @@ export default class LoginGateway {
     await api
       .post("register", registerData)
       .then((response) => {
-        console.log(response);
         //Obter dados do usuário recebido e traduzir eles para os nomes esperados
         const { id, api_token: apiToken, email_verified_at } = response.data;
 
@@ -84,13 +82,14 @@ export default class LoginGateway {
     await api
       .post("login/google", googleData)
       .then((response) => {
-        console.log(response.data);
         const {
           id,
           email,
           name,
           lastName,
           phone,
+          permission,
+          email_verified_at,
           api_token: apiToken,
         } = response.data;
 
@@ -101,7 +100,8 @@ export default class LoginGateway {
           lastName,
           phone,
           apiToken,
-          permission: USER_PERMISSIONS.CLIENT,
+          permission,
+          email_verified_at,
         };
 
         api.defaults.headers.common["Authorization"] =
@@ -115,5 +115,58 @@ export default class LoginGateway {
       });
 
     return returnUserData;
+  }
+
+  // Método para requisitar um código para trocar senha
+  async requestPasswordCode(email) {
+    var returnUserData;
+
+    await api
+      .post("recover-code", { email })
+      .then((response) => {
+        returnUserData = response.data;
+      })
+      .catch((e) => {
+        defaultError(e);
+        returnUserData = { error: true };
+      });
+
+    return returnUserData;
+  }
+
+  // Método para requisitar um código para trocar senha
+  async verifyPasswordCode(code) {
+    var returnUserData;
+
+    await api
+      .post("verify-code", { code })
+      .then((response) => {
+        returnUserData = response.data;
+      })
+      .catch((e) => {
+        defaultError(e);
+        returnUserData = { error: true };
+      });
+
+    return returnUserData;
+  }
+
+  //Método para atualizar a senha do usuário
+  async updatePassword(passwordData) {
+    var returnData;
+
+    await api
+      .put("clients/" + passwordData.id + "/password", passwordData)
+      .then((response) => {
+        const { data } = response;
+        data.error = false;
+        returnData = data;
+      })
+      .catch((e) => {
+        defaultError(e);
+        returnData = { error: true };
+      });
+
+    return returnData;
   }
 }

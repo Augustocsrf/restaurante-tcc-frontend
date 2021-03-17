@@ -21,7 +21,7 @@ export default class UnconfirmedUserProfileView extends Component {
     try {
       await this.props.confirmEmail(code);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 

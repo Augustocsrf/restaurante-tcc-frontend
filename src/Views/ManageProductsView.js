@@ -57,8 +57,6 @@ export default class ManageProductsView extends Component {
     const items = await this.props.getAllProducts();
     const categories = await this.props.getAllCategories();
 
-    console.log({ items, categories });
-
     //Definir um valor padrão como sendo o primeiro item encontrado nas categorias
     // Entretanto, caso as categorias estejam vazias, dar um valor padrão de zero
     var selectCategory;
@@ -410,7 +408,7 @@ export default class ManageProductsView extends Component {
     return (
       <div className="AppBackground paddedScreen">
         <div className="buttonsDiv">
-          <Link to={"/funcionario/categorias"} className="button">
+          <Link to={"/admin/categorias"} className="button">
             Gerenciar Categorias
           </Link>
 

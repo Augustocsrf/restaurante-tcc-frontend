@@ -2,10 +2,11 @@ import { Component } from "react";
 
 import DatePicker from "react-datepicker";
 import LoadingIcon from "../Components/LoadingIcon";
+import { formatOnlyHours, minTwoDigits } from "../Services/FormatterFunctions";
+import { Link } from "react-router-dom";
 
 import "../Styles/Reservation.css";
 import "react-datepicker/dist/react-datepicker.css";
-import { formatOnlyHours, minTwoDigits } from "../Services/FormatterFunctions";
 
 export default class ReservationView extends Component {
   state = {
@@ -48,8 +49,6 @@ export default class ReservationView extends Component {
       guests: number,
     };
 
-    console.log(time);
-
     await this.props.makeReservation(reservationData);
 
     try {
@@ -91,6 +90,7 @@ export default class ReservationView extends Component {
       number,
       occupation,
     } = this.state;
+    const { user } = this.props;
 
     //Método para verificar se o botão deve estar ahabilitado para prosseguir
     const isDisabled = () => {
@@ -211,7 +211,11 @@ export default class ReservationView extends Component {
             }}
           />
 
-          {loading ? (
+          {user.isUserGuest() ? (
+            <Link className="loginLink" to="/login">
+              Usuário deve estar logado para prosseguir
+            </Link>
+          ) : loading ? (
             <LoadingIcon loading={true} size="small" color="green" />
           ) : (
             <button

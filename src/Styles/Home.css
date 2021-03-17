@@ -11,7 +11,8 @@
 }
 
 .rowText {
-    margin-right: 2%;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 @media screen and (max-width: 600px) {
@@ -22,5 +23,5 @@
 
   .rowText {
     margin-right: 0%;
-}
+  }
 }

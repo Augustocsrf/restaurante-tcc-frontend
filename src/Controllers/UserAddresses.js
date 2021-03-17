@@ -13,8 +13,9 @@ export default class UserAddresses extends Component {
   constructor(props) {
     super(props);
 
-    //Mandar tela para o topo da página
+    //Mandar tela para o topo da página e definir o titulo da página
     window.scrollTo(0, 0);
+    document.title = "Endereços";
 
     this.getAddresses = this.getAddresses.bind(this);
     this.deleteAddress = this.deleteAddress.bind(this);

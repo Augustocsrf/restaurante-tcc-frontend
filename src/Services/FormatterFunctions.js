@@ -2,6 +2,10 @@ import { USER_PERMISSIONS } from "../DataTypes/User";
 
 //Método para formatar telefones
 function formatPhone(number) {
+  if (!number) {
+    return "Telefone não informado";
+  }
+
   try {
     var length = number.length;
     var formattedPhone;
@@ -22,6 +26,8 @@ function formatPhone(number) {
         number.substring(2, 7) +
         "-" +
         number.substring(7, 11);
+    } else {
+      formattedPhone = number;
     }
     return formattedPhone;
   } catch (e) {
@@ -91,11 +97,16 @@ function minTwoDigits(n) {
   return (n < 10 ? "0" : "") + n;
 }
 
+function formatMoney(money) {
+  return String(money.toFixed(2)).replace(".", ",");
+}
+
 export {
   formatPhone,
   formatDate,
   formatDateTime,
   formatOnlyHours,
   formatPermission,
+  formatMoney,
   minTwoDigits,
 };

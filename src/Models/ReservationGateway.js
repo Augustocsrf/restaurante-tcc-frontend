@@ -29,7 +29,6 @@ export default class ReservationGateway {
       .get("reservations/occupation")
       .then((response) => {
         const { data } = response;
-        console.log(data);
         returnInformation = data;
       })
       .catch((e) => {

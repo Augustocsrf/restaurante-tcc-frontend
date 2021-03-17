@@ -18,7 +18,7 @@
 
 i.addIcon {
   color: black;
-  
+
   padding: 5px;
   border-radius: 10px;
   align-self: center;
@@ -33,9 +33,9 @@ i.addIcon:hover {
   transition: all 0.3s ease-in-out;
 }
 
-i.removeItemIcon {
+.removeItemIcon {
   color: black;
-  background-color: green;
+  background-color: rgb(213, 58, 58);
   padding: 5px;
   border-radius: 5px;
   align-self: center;
@@ -44,7 +44,7 @@ i.removeItemIcon {
   margin-right: 1%;
 }
 
-i.removeItemIcon:hover {
+.removeItemIcon:hover {
   cursor: pointer;
 }
 
@@ -125,7 +125,7 @@ div.menuCart {
 }
 
 div.cartItemList {
-    text-align: justify;
+  text-align: justify;
 }
 
 div.cartItem {
@@ -133,8 +133,8 @@ div.cartItem {
 }
 
 p.cartItemComment {
-    font-weight: normal;
-    margin-left: 5%;
+  font-weight: normal;
+  margin-left: 5%;
 }
 
 div.cartItemRow {
@@ -184,7 +184,7 @@ p.cartItemPrice {
   border-radius: 4px;
   outline: none;
   border: none;
-  background-color: #FF2E2A;
+  background-color: #ff2e2a;
   width: 90%;
   margin: 1% auto;
   align-self: center;
@@ -203,19 +203,19 @@ p.cartItemPrice {
 }
 
 button.disabledLink {
-    display: block;
-    padding: 8px 10px;
-    border-radius: 4px;
-    outline: none;
-    border: none;
-    background-color: #555;
-    width: 90%;
-    margin: 1% auto;
-    align-self: center;
-    align-content: center;
-    text-align: center;
-    text-decoration: none;
-    color: black;
+  display: block;
+  padding: 8px 10px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  background-color: #555;
+  width: 90%;
+  margin: 1% auto;
+  align-self: center;
+  align-content: center;
+  text-align: center;
+  text-decoration: none;
+  color: black;
 }
 
 p.totalPriceText {
@@ -250,6 +250,6 @@ p.totalPriceText {
   }
 
   div.menuCart {
-    width: 100%;
+    width: 80%;
   }
 }

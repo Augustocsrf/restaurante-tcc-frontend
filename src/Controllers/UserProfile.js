@@ -14,8 +14,9 @@ export default class UserProfile extends Component {
   constructor(props) {
     super(props);
 
-    //Mandar tela para o topo da página
+    //Mandar tela para o topo da página e definir o titulo da página
     window.scrollTo(0, 0);
+    document.title = "Perfil";
 
     this.logout = this.logout.bind(this);
     this.getClientsOpenOrdersAndReservations = this.getClientsOpenOrdersAndReservations.bind(

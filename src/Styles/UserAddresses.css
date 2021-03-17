@@ -55,6 +55,7 @@ button#createAddressButton {
   text-align: center;
   text-decoration: none;
   background-color: #009e60;
+  font-size: 16px;
 }
 
 button#createAddressButton:hover {
@@ -64,5 +65,44 @@ button#createAddressButton:hover {
   transition: 250ms;
 }
 
-@media screen and (max-width: 600px) {
+/* Formatár elementos únicos do formulário*/
+div.form-row {
+  display: flex;
+  flex-direction: row;
+}
+
+div.form-space {
+  display: block;
+  width: 20px;
+}
+
+div#input-street-num {
+  display: flex;
+  flex-direction: row;
+  max-width: 18em;
+}
+
+input#input-street {
+  min-width: 70%;
+  margin-right: 2%;
+}
+
+input#input-num {
+  min-width: 20%;
+  width: 20%;
+}
+
+@media screen and (max-width: 480px) {
+  div.form-space {
+    display: none;
+  }
+
+  div.form-row {
+    flex-direction: column;
+  }
+
+  button#createAddressButton {
+    margin: 2% auto 2%;
+    width: 90%;
+  }
 }
