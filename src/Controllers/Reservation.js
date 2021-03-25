@@ -16,7 +16,7 @@ export default class Reservation extends Component {
     document.title = "Reserva";
 
     this.makeReservation = this.makeReservation.bind(this);
-    this.getBusyDays = this.getBusyDays.bind(this);
+    this.getBusyDates = this.getBusyDates.bind(this);
   }
 
   async makeReservation(reservationData) {
@@ -39,7 +39,7 @@ export default class Reservation extends Component {
     }
   }
 
-  async getBusyDays() {
+  async getBusyDates() {
     const gateway = new ReservationGateway();
     const response = await gateway.getBusyDates();
 
@@ -53,7 +53,7 @@ export default class Reservation extends Component {
       <ReservationView
         user={user}
         makeReservation={this.makeReservation}
-        getBusyDays={this.getBusyDays}
+        getBusyDates={this.getBusyDates}
       />
     );
   }

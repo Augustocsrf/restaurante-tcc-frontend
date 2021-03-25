@@ -11,35 +11,7 @@ import "../Styles/Menu.css";
 //View da página de cardápio
 export default class MenuView extends Component {
   state = {
-    category: [
-      /*
-      {
-        nome: "category A",
-        items: [
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-        ],
-      },
-      {
-        nome: "Category B",
-        items: [
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-          { nome: "A", preco: "B", descricao: "C" },
-        ],
-      },*/
-    ],
+    category: [],
 
     cart: new ShoppingCart(),
     showModal: false,

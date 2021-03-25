@@ -18,8 +18,6 @@ export default class GoogleLoginButton extends React.Component {
   }
 
   async loginGoogle(googleData) {
-    console.log(googleData);
-
     const {
       email,
       givenName: name,

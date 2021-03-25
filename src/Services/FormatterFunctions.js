@@ -39,6 +39,12 @@ function formatPhone(number) {
 function formatDate(rawDate) {
   //Criar um objeto data
   const d = new Date(rawDate);
+
+  // Caso o valor rawDate tiver menos de 11 caracteres, não é uma data completa, e precisa ter seu fuso horário ajustado
+  if (rawDate.length < 11) {
+    d.setHours(d.getHours() + 3);
+  }
+
   const date = minTwoDigits(d.getDate());
   const month = minTwoDigits(d.getMonth() + 1);
 

@@ -25,9 +25,6 @@ export default class ManageProductsView extends Component {
     showModal: false,
     modalEditMode: false,
 
-    page: 1,
-    totalItems: 60,
-
     itemIndex: 0, //Index de um produto sendo editado
     itemId: "", //ID de um produto a ser editado
     name: "",
@@ -207,6 +204,8 @@ export default class ManageProductsView extends Component {
   hideModal() {
     this.setState({
       showModal: false,
+      modalEditMode: false,
+
       itemIndex: 0, //Index de um produto sendo editado
       itemId: "", //ID de um produto a ser editado
       name: "",

@@ -131,10 +131,9 @@ export default class ManageCategoryView extends Component {
       const newCategory = await this.props.createCategory({ name });
 
       //Caso não ter ocorrido erro, adicionar nova categoria criada a lista
-      if (newCategory.error) {
+      if (!newCategory.error) {
+        categories.push(newCategory);
       }
-
-      categories.push(newCategory);
     } else {
       //Obter informações da categoria a ser editada
       const categoryData = {

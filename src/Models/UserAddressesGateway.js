@@ -5,10 +5,10 @@ export default class UserAddressesGateway {
     var returnData;
 
     await api
-      .get('clients/' + userData.id + '/addresses')
+      .get("clients/" + userData.id + "/addresses")
       .then((response) => {
         const { data } = response;
-        returnData = data;        
+        returnData = data;
       })
       .catch((e) => {
         defaultError(e);
@@ -30,7 +30,7 @@ export default class UserAddressesGateway {
       .then((response) => {
         const { data } = response;
 
-        returnData = data
+        returnData = data;
       })
       .catch((e) => {
         defaultError(e);
@@ -63,24 +63,4 @@ export default class UserAddressesGateway {
 
     return responseData;
   }
-
-  //, callback, callbackInvalid
-  //Obter dados
-  checkZIPLocation = (zip) => {
-    fetch("https://viacep.com.br/ws/" + zip + "/json/unicode/")
-      .then((response) => response.json())
-      .then((response) => {
-        /*
-        let valuesObtained = {
-          street: responseJson.logradouro,
-          district: responseJson.bairro,
-          city: responseJson.localidade,
-          stateCode: responseJson.uf,
-        };
-
-        //let message = this.validateZipLocation(valuesObtained);
-        */
-      })
-      .catch((error) => console.error(error));
-  };
 }

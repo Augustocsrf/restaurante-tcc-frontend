@@ -46,7 +46,6 @@ export default class ForgotPasswordView extends Component {
 
     const response = await this.props.verifyPasswordCode(this.state.code);
 
-    console.log(response);
     if (!response.error) {
       alert(response.message);
 

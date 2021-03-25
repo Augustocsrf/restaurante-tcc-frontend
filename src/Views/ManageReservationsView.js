@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import LoadingIcon from "../Components/LoadingIcon";
+import { formatDate, formatOnlyHours } from "../Services/FormatterFunctions";
 
 import "../Styles/ManageReservations.css";
 
@@ -56,19 +57,6 @@ export default class ManageReservationsView extends Component {
   render() {
     const { reservations, reservationStatuses, loading } = this.state;
 
-    //#region Métodos de formatação de data/hora
-    //Métodos para formatar dia e hora
-    let formatDay = (day) => {
-      let dayArray = day.split("-");
-      return dayArray[2] + "/" + dayArray[1] + "/" + dayArray[0];
-    };
-
-    let formatHour = (hour) => {
-      let hourArray = hour.split(":");
-      return hourArray[0] + ":" + hourArray[1];
-    };
-    //#endregion
-
     //Criar componente para seleção de status
     let selectStatus = (reservation, index) => {
       const { reservation_status } = reservation;
@@ -106,8 +94,8 @@ export default class ManageReservationsView extends Component {
     //Métodos para listar as reservas em aberto do usuário
     let reservationList = () => {
       return reservations.map((reservation, index) => {
-        let dayFormat = formatDay(reservation.day);
-        let hourFormat = formatHour(reservation.time);
+        let dayFormat = formatDate(reservation.day);
+        let hourFormat = formatOnlyHours(reservation.time);
 
         return (
           <div

@@ -58,7 +58,7 @@ export default class ReservationView extends Component {
 
   //Método para obter os dias ocupados do restaurante
   async getBusyDates() {
-    const occupation = await this.props.getBusyDays();
+    const occupation = await this.props.getBusyDates();
     let excludedDates = [];
 
     //Para cada dia em que todas as 4 mesas do restaurante estão ocupadas,

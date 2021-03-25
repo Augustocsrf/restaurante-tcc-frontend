@@ -16,8 +16,8 @@ import { PAYMENT_TYPES } from "../DataTypes/PaymentTypes";
 import LoadingIcon from "../Components/LoadingIcon";
 import Modal from "../Components/Modal";
 
-import "../Styles/UserProfile.css";
 import UnconfirmedUserProfileView from "./sub-pages/UnconfirmedUserProfileView";
+import "../Styles/UserProfile.css";
 
 export default class UserProfileView extends Component {
   state = {

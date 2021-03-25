@@ -45,7 +45,7 @@ export default class ManageCategories extends Component {
     return response;
   }
 
-  async createCategory(categoryData, successCallback) {
+  async createCategory(categoryData) {
     const gateway = new ManageCategoriesGateway();
     let response = await gateway.createCategory(categoryData);
 

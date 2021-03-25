@@ -47,6 +47,7 @@ export default class ManageOrdersView extends Component {
     this.setState({ loading: true });
 
     const orders = await this.props.getOpenOrders();
+
     this.setState({ orders });
   }
 

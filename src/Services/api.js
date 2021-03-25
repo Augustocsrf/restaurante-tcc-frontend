@@ -9,20 +9,20 @@ export default axios.create({
 });
 
 const defaultError = (e) => {
-  // console.log(e);
-
   const { status } = e.response;
   const { message } = e.response.data;
 
-  if (status === 409) {
+  if (status !== 500 && message) {
     alert(message);
     return 0;
   }
 
+  /*
   if (message) {
     alert(message);
     return 0;
   }
+  */
 
   alert(
     "Erro ocorrido com a conexão com o servidor. Tente novamente mais tarde."

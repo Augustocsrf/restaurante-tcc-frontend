@@ -23,6 +23,7 @@ import LoadingIcon from "../Components/LoadingIcon";
 export default class ManageStaffView extends Component {
   state = {
     loading: false,
+    loadingModal: false,
     showModal: false,
     staff: [],
 
@@ -93,6 +94,8 @@ export default class ManageStaffView extends Component {
     //Previnir evento padrão
     e.preventDefault();
 
+    this.setState({ loadingModal: true });
+
     const {
       staff,
       modalEditMode,
@@ -114,8 +117,7 @@ export default class ManageStaffView extends Component {
       phone,
     };
 
-    if (modalEditMode) {
-    } else {
+    if (!modalEditMode) {
       const newStaff = await this.props.createStaff(staffData);
 
       //Caso tenha ocorrido, adicionar o novo funcionário a lista de funcionários
@@ -136,6 +138,8 @@ export default class ManageStaffView extends Component {
         });
       }
     }
+
+    this.setState({ loadingModal: false });
   }
 
   //#region Métodos para abrir ou fechar modal
@@ -143,7 +147,15 @@ export default class ManageStaffView extends Component {
     this.setState({ showModal: true });
   }
   hideModal() {
-    this.setState({ showModal: false });
+    this.setState({
+      showModal: false,
+      email: "",
+      password: "",
+      confirmPassword: "",
+      name: "",
+      lastName: "",
+      phone: "",
+    });
   }
 
   //#endregion
@@ -235,9 +247,13 @@ export default class ManageStaffView extends Component {
               />
             </div>
 
-            <button className="submit-btn" type="submit" disabled={loading}>
-              Criar
-            </button>
+            {this.state.loadingModal ? (
+              <LoadingIcon />
+            ) : (
+              <button className="submit-btn" type="submit" disabled={loading}>
+                Criar
+              </button>
+            )}
 
             <button
               className="submit-btn cancel-btn"
