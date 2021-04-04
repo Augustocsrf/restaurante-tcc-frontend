@@ -109,11 +109,13 @@ export default class ReservationView extends Component {
       return false;
     };
 
-    //Método para fazer com que apenas os dias de sexta, sábado e domingo estejam disponíveis
+    //Método para fazer com que apenas os dias corretos estejam disponíveis
+    /*
     const isDayAvailable = (date) => {
       const day = date.getDay();
       return !(day === 1);
     };
+    */
 
     const selectTime = () => {
       if (date === undefined) {
@@ -163,7 +165,7 @@ export default class ReservationView extends Component {
             }}
             excludeDates={this.state.excludedDates}
             minDate={currentDate}
-            filterDate={isDayAvailable}
+            // filterDate={isDayAvailable}
             dateFormat="dd/MM/yyyy"
             placeholderText="Data da reserva"
           />

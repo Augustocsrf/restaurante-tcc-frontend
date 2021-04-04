@@ -65,7 +65,8 @@ export class FooterContainer extends React.Component {
               <Footer.Title>Restaurante TCC</Footer.Title>
               <p>Rua A, num; Bairro. Cidade-Estado</p>
               <p>(99) 99999-9999</p>
-              <p>Aberto Terça a Domingo, 18:00 a 00:00</p>
+              <p>Aberto para pedidos a qualquer momento!</p>
+              <p>Aberto para reservas todas as noites, 18:00 a 00:00</p>
             </Footer.FirstColumn>
 
             <Footer.Column>

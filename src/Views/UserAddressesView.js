@@ -179,7 +179,8 @@ export default class UserAddressesView extends Component {
                     maxLength={8}
                     value={this.state.zip}
                     onChange={(e) => {
-                      this.setState({ zip: e.target.value });
+                      const zip = e.target.value.replace(/[a-zA-Z`~!@#$%^&*() _|+\-=?;:'",.<>{}[\]\\/]/gi, '');
+                      this.setState({ zip });
                     }}
                   />
                 </div>

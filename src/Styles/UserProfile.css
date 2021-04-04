@@ -193,7 +193,7 @@ button#logout-btn:hover {
     margin-bottom: 5%;
   }
 
-  div.orderItem button.cancelOrderBtn {
+  div.orderItem button.cancelOrderBtn, div.reservationItem button.cancelReservationBtn {
     width: 100%;
   }
 }

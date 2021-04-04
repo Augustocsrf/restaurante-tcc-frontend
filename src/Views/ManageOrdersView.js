@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import LoadingIcon from "../Components/LoadingIcon";
-import { formatDateTime } from "../Services/FormatterFunctions";
+import { formatDateTime, formatMoney } from "../Services/FormatterFunctions";
 
 //#region Importação de Material-UI
 import { makeStyles } from "@material-ui/core/styles";
@@ -208,7 +208,7 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row.name}
         </TableCell>
-        <TableCell>{row.price.toFixed(2)}</TableCell>
+        <TableCell>R$ {formatMoney(row.price)}</TableCell>
         <TableCell>
           {row.payment_method === 1
             ? "Pagar com cartão"
@@ -251,7 +251,7 @@ function Row(props) {
                       </TableCell>
                       <TableCell>{item.quantity}</TableCell>
                       <TableCell>{item.comment}</TableCell>
-                      <TableCell>{item.price}</TableCell>
+                      <TableCell>R$ {formatMoney(item.price)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

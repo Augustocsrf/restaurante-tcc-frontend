@@ -1,12 +1,18 @@
 import { Component } from "react";
 
+import { Link } from "react-router-dom";
+
 import { DELIVERY_TYPES } from "../DataTypes/DeliveryTypes";
 import { PAYMENT_TYPES } from "../DataTypes/PaymentTypes";
 
+import LoadingIcon from '../Components/LoadingIcon';
+
 import "../Styles/OrderInformation.css";
+
 
 export default class OrderInformationView extends Component {
   state = {
+    loading: false,
     showModal: false,
     showCashInput: false,
     addressList: [],
@@ -37,8 +43,9 @@ export default class OrderInformationView extends Component {
 
   //Método para obter os endereços
   async getAddresses() {
+    this.setState({ loading: true })
     let addressList = await this.props.getAddresses();
-    this.setState({ addressList });
+    this.setState({ addressList, loading: false });
   }
 
   //Método para mostrar as opções de endereço de entrega
@@ -48,7 +55,7 @@ export default class OrderInformationView extends Component {
 
   //Método para esconder as opções de endereço de entrega
   hideDeliveryOptions() {
-    this.setState({ showModal: false });
+    this.setState({ showModal: false, deliveryAddress: { id: null } });
   }
 
   //Método para atualizar o método de entrega do pedido
@@ -125,12 +132,21 @@ export default class OrderInformationView extends Component {
   }
 
   render() {
+    const { loading, addressList } = this.state;
     const { cart } = this.props;
 
     let deliveryOptions = () => {
+      if(loading){
+        return <LoadingIcon />
+      }
+
+      if(addressList.length === 0){
+        return <p>Nenhum endereço cadastrado. Selecione para pegar no local ou adicione um novo endereço em seu <Link to='/perfil/enderecos'>perfil</Link>.</p>
+      }
+
       return (
         <div className="addressSelection">
-          {this.state.addressList.map((item, index) => {
+          {addressList.map((item, index) => {
             return (
               <p className="radioButtonParagraph" key={index}>
                 <input

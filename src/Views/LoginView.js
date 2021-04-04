@@ -135,7 +135,7 @@ export default class LoginView extends Component {
           </form>
 
           {/** Formulário para cliente se registrar no site */}
-          <form onSubmit={this.handleRegister}>
+          <form onSubmit={this.handleRegister} id="register-form">
             {/* Input do email para registro */}
             <h3>Cadastre-se</h3>
             <div className="form-group">
@@ -185,10 +185,17 @@ export default class LoginView extends Component {
                 name="phone"
                 type="tel"
                 required
-                placeholder="Telefone"
+                minLength={10}
+                maxLength={12}
+                placeholder="(DD) Telefone"
                 onChange={(e) => {
-                  this.setState({ phone: e.target.value });
+                  const phone = e.target.value.replace(
+                    /[a-zA-Z`~!@#$%^&*() _|+\-=?;:'",.<>{}[\]\\/]/gi,
+                    ""
+                  );
+                  this.setState({ phone });
                 }}
+                value={this.state.phone}
               />
             </div>
 
@@ -208,7 +215,7 @@ export default class LoginView extends Component {
 
             {/* Input do sobrenome para registro */}
             <div className="form-group">
-              <label htmlFor="lastName">Nome</label>
+              <label htmlFor="lastName">Sobrenome</label>
               <input
                 type="text"
                 name="lastName"

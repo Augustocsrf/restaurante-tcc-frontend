@@ -238,11 +238,17 @@ export default class ManageStaffView extends Component {
               <input
                 type="text"
                 name="name"
-                placeholder="Telefone"
+                minLength={10}
+                maxLength={12}
+                placeholder="(DD) Telefone"
                 required
                 value={this.state.phone}
                 onChange={(e) => {
-                  this.setState({ phone: e.target.value });
+                  const phone = e.target.value.replace(
+                    /[a-zA-Z`~!@#$%^&*() _|+\-=?;:'",.<>{}[\]\\/]/gi,
+                    ""
+                  );
+                  this.setState({ phone });
                 }}
               />
             </div>

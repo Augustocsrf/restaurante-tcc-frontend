@@ -30,3 +30,21 @@
   transition: all 0.3s ease-in-out;
   color: black;
 }
+
+@media screen and (min-width:1025px) {
+  .AppBackground {
+    min-height: 62vh;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .AppBackground {
+    min-height: 77.8vh;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .AppBackground {
+    min-height: 50.8vh;
+  }
+}

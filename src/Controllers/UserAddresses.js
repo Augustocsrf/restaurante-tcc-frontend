@@ -44,6 +44,10 @@ export default class UserAddresses extends Component {
   }
 
   async registerAddress(addressData) {
+    if(addressData.zip){
+      
+    }
+
     //Adicionar id do usuário para as informações a serem enviadas
     const { user } = this.context;
     addressData.id = user.id;

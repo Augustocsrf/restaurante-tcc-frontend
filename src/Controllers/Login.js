@@ -109,7 +109,9 @@ export default class Login extends Component {
       }
     } else {
       //Alertar o usuário que a senha informada não atende as especificações
-      alert("Senha deve ter pelo menos 7 digitos e 1 numero");
+      alert(
+        "Senha deve ter pelo menos entre 8 e 12 dígitos, contendo 1 letra maíuscula, 1 letra minúscula, e 1 numero"
+      );
     }
 
     return false;
@@ -163,7 +165,9 @@ export default class Login extends Component {
       }
     } else {
       //Alertar o usuário que a senha informada não atende as especificações
-      alert("Senha deve ter pelo menos 7 digitos e 1 numero");
+      alert(
+        "Senha deve ter pelo menos entre 8 e 12 dígitos, contendo 1 letra maíuscula, 1 letra minúscula, e 1 numero"
+      );
     }
 
     return false;

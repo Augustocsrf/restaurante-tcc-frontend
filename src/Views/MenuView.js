@@ -111,21 +111,27 @@ export default class MenuView extends Component {
         <form className="addItemModal" onSubmit={this.addItemToCart}>
           <h3>{item.nome}</h3>
 
-          <input
-            type="number"
-            required
-            placeholder="Quantidade"
-            min={1}
-            value={this.state.quantityToOrder}
-            onChange={(e) => this.setState({ quantityToOrder: e.target.value })}
-          />
+          <div className="form-group">
+            <label htmlFor="quantity">Quantidade</label>
+            <input
+              type="number"
+              name="quantity"
+              required
+              placeholder="Quantidade"
+              min={1}
+              value={this.state.quantityToOrder}
+              onChange={(e) => this.setState({ quantityToOrder: e.target.value })}
+            />
+          </div>
 
-          <textarea
-            rows={4}
-            placeholder="Comentários"
-            value={this.state.comment}
-            onChange={(e) => this.setState({ comment: e.target.value })}
-          />
+          <div className="form-group">
+            <textarea
+              rows={4}
+              placeholder="Comentários (Especifique se quer algo removido ou detalhes sobre seu pedido)"
+              value={this.state.comment}
+              onChange={(e) => this.setState({ comment: e.target.value })}
+            />
+          </div>
 
           <button className="submit-btn" type="submit">
             Adicionar ao carrinho

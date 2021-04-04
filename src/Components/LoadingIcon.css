@@ -8,6 +8,19 @@ div.fullScreen{
   padding-bottom: 300px;
 }
 
+@media screen and (min-width:1025px) {
+  div.fullScreen{
+    min-height: 62vh;
+  }
+}
+
+
+@media screen and (max-width: 800px) {
+  div.fullScreen{
+    height: 77.8vh;
+  }
+}
+
 @media screen and (max-width: 480px) {
   div.fullScreen{
     height: auto;

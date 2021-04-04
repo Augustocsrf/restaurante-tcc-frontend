@@ -368,11 +368,17 @@ export default class UserProfileView extends Component {
             <input
               type="text"
               name="phone"
-              placeholder="Telefone"
               required
+              minLength={10}
+              maxLength={12}
+              placeholder="(DD) Telefone"
               value={this.state.phone}
               onChange={(e) => {
-                this.setState({ phone: e.target.value });
+                const phone = e.target.value.replace(
+                  /[a-zA-Z`~!@#$%^&*() _|+\-=?;:'",.<>{}[\]\\/]/gi,
+                  ""
+                );
+                this.setState({ phone });
               }}
             />
 
@@ -460,6 +466,10 @@ export default class UserProfileView extends Component {
           <button
             className="editProfileButtons"
             onClick={() => this.showModal(false)}
+            style={{
+              paddingTop: 7,
+              paddingLeft: 10,
+            }}
           >
             <Edit
               style={{
@@ -475,6 +485,10 @@ export default class UserProfileView extends Component {
           <button
             className="editProfileButtons"
             onClick={() => this.showModal(true)}
+            style={{
+              paddingTop: 7,
+              paddingLeft: 10,
+            }}
           >
             <VpnKey
               style={{

@@ -22,13 +22,7 @@ export default class Reservation extends Component {
   async makeReservation(reservationData) {
     const { user } = this.context;
 
-    //Caso o usuário seja um cliente, usar o seu id
-    // Caso o usuário não seja um cliente, usar um id 0, não conectando a id com o cliente
-    if (user.isUserClient()) {
-      reservationData.clientId = user.id;
-    } else {
-      reservationData.clientId = null;
-    }
+    reservationData.clientId = user.id;
 
     const gateway = new ReservationGateway();
     let { message, error } = await gateway.makeReservation(reservationData);
