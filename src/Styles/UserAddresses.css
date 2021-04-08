@@ -2,14 +2,13 @@ div.listView {
   display: flex;
   flex-direction: column;
   width: 100%;
-  /*background-color: red;*/
 }
 
 div.addressBox {
   border: 1px solid black;
   padding: 1% 2%;
-  margin: 1% 0%;
-  width: 90%;
+  margin: 2% 0%;
+  width: 95%;
   align-self: center;
 }
 
@@ -49,7 +48,7 @@ button#createAddressButton {
   border: none;
   cursor: pointer;
   color: black;
-  margin: 1% 0% 1% 3%;
+  margin: 1% 0% 1%;
   width: 20%;
   align-content: center;
   text-align: center;

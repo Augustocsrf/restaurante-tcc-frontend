@@ -1,5 +1,7 @@
+import { Edit } from "@material-ui/icons";
 import { Component } from "react";
 
+import ExportExcel from "../Components/ExportExcel";
 import LoadingIcon from "../Components/LoadingIcon";
 import Modal from "../Components/Modal";
 
@@ -18,6 +20,9 @@ export default class UserAddressesView extends Component {
 
     showModal: false,
     loading: false,
+    editModal: false,
+    editId: "",
+    editIndex: "",
 
     addresses: [],
   };
@@ -67,20 +72,14 @@ export default class UserAddressesView extends Component {
     }
   }
 
+  //#region Métodos para abrir e fechar o modal
   showModal() {
     this.setState({ showModal: true });
   }
 
-  hideModal() {
-    this.setState({ showModal: false });
-  }
-
-  async submit(e) {
-    this.setState({ loading: true });
-
-    e.preventDefault();
-
+  showEditModal(address, index) {
     const {
+      id: editId,
       zip,
       street,
       district,
@@ -89,29 +88,31 @@ export default class UserAddressesView extends Component {
       complement,
       reference,
       identification,
-    } = this.state;
-
-    const response = await this.props.registerAddress({
-      zip,
-      street,
-      district,
-      city,
-      number,
-      complement,
-      reference,
-      identification,
-    });
-
-    let { addresses } = this.state;
-
-    if (!response.error) {
-      addresses.push(response.address);
-    }
+    } = address;
 
     this.setState({
-      loading: false,
-      showModal: false,
+      showModal: true,
+      editModal: true,
 
+      zip,
+      street,
+      district,
+      city,
+      number,
+      complement,
+      reference,
+      identification,
+      editId,
+      editIndex: index,
+    });
+  }
+
+  hideModal() {
+    this.setState({
+      showModal: false,
+      editModal: false,
+      editId: "",
+      editIndex: "",
       zip: "",
       street: "",
       district: "",
@@ -122,9 +123,110 @@ export default class UserAddressesView extends Component {
       identification: "",
     });
   }
+  //#endregion
+
+  async submit(e) {
+    e.preventDefault();
+
+    this.setState({ loading: true });
+
+    const {
+      zip,
+      street,
+      district,
+      city,
+      number,
+      complement,
+      reference,
+      identification,
+
+      editId,
+      editIndex,
+      editModal,
+
+      addresses,
+    } = this.state;
+
+    const addressData = {
+      id: editId,
+      zip,
+      street,
+      district,
+      city,
+      number,
+      complement,
+      reference,
+      identification,
+    };
+
+    //Verificar se o formulário está em modo de criação ou de edição, e realizar as operações de acordo
+    if (editModal) {
+      const response = await this.props.updateAddress(addressData);
+
+      //Não prosseguir o processo se tiver ocorrido um erro
+      if (response.error) {
+        return 0;
+      }
+
+      addresses[editIndex] = addressData;
+
+      this.setState({ addresses, loading: false });
+
+      this.hideModal();
+    } else {
+      const response = await this.props.registerAddress(addressData);
+
+      if (!response.error) {
+        addresses.push(response.address);
+      }
+
+      this.setState({
+        loading: false,
+        showModal: false,
+
+        editId: "",
+        editIndex: "",
+        zip: "",
+        street: "",
+        district: "",
+        city: "",
+        number: "",
+        complement: "",
+        reference: "",
+        identification: "",
+      });
+    }
+  }
 
   render() {
     const { addresses, loading } = this.state;
+
+    //Botão para baixar um planilha mostrando toda a tabela de endereços
+    const excelDownloadButton = () => {
+      //Colunas que estarão na planilha do excel
+      const headers = [
+        { label: "CEP", value: "zip" },
+        { label: "Rua", value: "street" },
+        { label: "Bairro", value: "district" },
+        { label: "Number", value: "number" },
+        { label: "Cidade", value: "city" },
+        { label: "Complemento", value: "complement" },
+        { label: "Referência", value: "reference" },
+        { label: "Identificação", value: "identification" },
+
+        { label: "Criado em", value: "created_at" },
+        { label: "Atualizado em", value: "updated_at" },
+      ];
+
+      return (
+        <ExportExcel
+          headers={headers}
+          data={addresses}
+          sheetName={"Endereços"}
+          title="Baixar Tabela de Endereços"
+        />
+      );
+    };
 
     let addressList = () => {
       return addresses.map((item, index) => {
@@ -145,12 +247,19 @@ export default class UserAddressesView extends Component {
           <div className="addressBox" key={index}>
             <div className="addressBox-titleLine">
               <p className="identification">{item.identification}</p>
-              <i
-                className="fas fa-trash deleteIcon"
-                onClick={() => this.deleteAddress(item.id, index)}
-              >
-                {" "}
-              </i>
+
+              <div style={{ marginLeft: "auto" }}>
+                <Edit
+                  className="mui-editIcon"
+                  onClick={() => this.showEditModal(item, index)}
+                />
+                <i
+                  className="fas fa-trash deleteIcon"
+                  onClick={() => this.deleteAddress(item.id, index)}
+                >
+                  {" "}
+                </i>
+              </div>
             </div>
 
             <p>{addressText}</p>
@@ -179,7 +288,10 @@ export default class UserAddressesView extends Component {
                     maxLength={8}
                     value={this.state.zip}
                     onChange={(e) => {
-                      const zip = e.target.value.replace(/[a-zA-Z`~!@#$%^&*() _|+\-=?;:'",.<>{}[\]\\/]/gi, '');
+                      const zip = e.target.value.replace(
+                        /[a-zA-Z`~!@#$%^&*() _|+\-=?;:'",.<>{}[\]\\/]/gi,
+                        ""
+                      );
                       this.setState({ zip });
                     }}
                   />
@@ -300,7 +412,7 @@ export default class UserAddressesView extends Component {
     };
 
     return (
-      <div className="listView AppBackground">
+      <div className="AppBackground paddedScreen">
         <button id="createAddressButton" onClick={this.showModal}>
           Adicionar Novo
         </button>
@@ -314,6 +426,7 @@ export default class UserAddressesView extends Component {
         ) : (
           addressList()
         )}
+        {addresses.length === 0 || loading ? null : excelDownloadButton()}
       </div>
     );
   }

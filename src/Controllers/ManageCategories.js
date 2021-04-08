@@ -6,7 +6,7 @@ import { Context } from "../Context/Context";
 import ManageCategoriesGateway from "../Models/ManageCategoriesGateway";
 import ManageCategoryView from "../Views/ManageCategoriesView";
 
-//Controller da tela de login e registro
+//Controller da tela de Gerenciamento de Categorias
 export default class ManageCategories extends Component {
   static contextType = Context;
 

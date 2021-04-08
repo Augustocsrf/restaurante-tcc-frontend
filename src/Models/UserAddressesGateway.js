@@ -63,4 +63,23 @@ export default class UserAddressesGateway {
 
     return responseData;
   }
+
+  async updateAddress(addressData) {
+    var responseData;
+
+    await api
+      .put("addresses/" + addressData.id, addressData)
+      .then((response) => {
+        responseData = response.data;
+      })
+      .catch((e) => {
+        defaultError(e);
+
+        responseData = {
+          error: true,
+        };
+      });
+
+    return responseData;
+  }
 }

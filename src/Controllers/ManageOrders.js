@@ -57,6 +57,7 @@ export default class Menu extends Component {
 
     return (
       <ManageOrdersView
+        user={user}
         updateOrder={updateOrder}
         getOpenOrders={getOpenOrders}
         getOrdersStatuses={getOrdersStatuses}

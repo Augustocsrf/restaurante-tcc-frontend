@@ -7,7 +7,7 @@ import { removeCredentials } from "../Services/authentication";
 import UserProfileView from "../Views/UserProfileView";
 import UserProfileGateway from "../Models/UserProfileGateway";
 
-//Controller da tela de login do funcionário
+//Controller da tela de Perfil de Usuário
 export default class UserProfile extends Component {
   static contextType = Context;
 
@@ -132,7 +132,9 @@ export default class UserProfile extends Component {
       }
     } else {
       //Alertar o usuário que a senha informada não atende as especificações
-      alert("Senha deve ter pelo menos entre 8 e 12 dígitos, contendo 1 letra maíuscula, 1 letra minúscula, e 1 numero");
+      alert(
+        "Senha deve ter pelo menos entre 8 e 12 dígitos, contendo 1 letra maíuscula, 1 letra minúscula, e 1 numero"
+      );
     }
 
     return false;

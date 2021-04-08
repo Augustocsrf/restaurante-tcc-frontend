@@ -17,6 +17,7 @@ import Reservation from "./Controllers/Reservation";
 import OrderConfirm from "./Controllers/OrderConfirm";
 
 import ManageOrders from "./Controllers/ManageOrders";
+import ManageOrderStatus from "./Controllers/ManageOrderStatus";
 import ManageCategories from "./Controllers/ManageCategories";
 import ManageProducts from "./Controllers/ManageProducts";
 import ManageReservations from "./Controllers/ManageReservations";
@@ -70,6 +71,12 @@ export default class App extends Component {
                 path="/funcionario/pedidos"
                 exact
                 component={ManageOrders}
+              />
+
+              <Route
+                path="/admin/status-pedido"
+                exact
+                component={ManageOrderStatus}
               />
 
               <Route path="/admin/produtos" exact component={ManageProducts} />

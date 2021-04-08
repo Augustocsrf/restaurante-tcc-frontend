@@ -6,6 +6,7 @@ import { Context } from "../Context/Context";
 import DataReportView from "../Views/DataReportView";
 import DataReportGateway, { REPORTS } from "../Models/DataReportGateway";
 
+//Controller para a tela de relatórios
 export default class DataReport extends Component {
   static contextType = Context;
   constructor(props) {

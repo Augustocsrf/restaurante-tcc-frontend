@@ -85,7 +85,7 @@ export default class ManageReservationsView extends Component {
               this.updateReservation(reservation, index);
             }}
           >
-            Confirmar Alterção
+            Confirmar Alteração
           </button>
         </div>
       );

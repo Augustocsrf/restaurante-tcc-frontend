@@ -18,101 +18,108 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 //#endregion
 
-export default class ManageCategoryView extends Component {
+export default class ManageOrderStatusView extends Component {
   state = {
     loading: false,
     showModal: false,
     modalEditMode: false,
 
-    categories: [],
+    orderStatus: [],
 
-    categoryId: 0, //ID de uma categoria a ser editada
-    categoryIndex: 0, //Index de uma categoria sendo editada
+    editId: 0, //ID de um status a ser editado
+    editIndex: 0, //Index de um status sendo editado
     name: "",
   };
 
   constructor(props) {
     super(props);
 
-    this.getCategories = this.getCategories.bind(this);
-    this.deleteCategory = this.deleteCategory.bind(this);
+    this.getOrderStatus = this.getOrderStatus.bind(this);
+    this.deleteOrderStatus = this.deleteOrderStatus.bind(this);
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.submit = this.submit.bind(this);
   }
 
   componentDidMount() {
-    this.getCategories();
+    this.getOrderStatus();
   }
 
-  //Método para obter as categorias
-  async getCategories() {
+  //Método para obter os status de pedidos
+  async getOrderStatus() {
     this.setState({ loading: true });
 
-    let categories = await this.props.getCategories();
+    let orderStatus = await this.props.getOrderStatus();
 
-    this.setState({ categories, loading: false });
+    this.setState({ orderStatus, loading: false });
   }
 
-  //Método para deletar categorias
-  async deleteCategory(id, index) {
-    const { categories } = this.state;
-    //Requisitar confirmação do usuário antes de deletar a categoria
+  //Método para deletar status
+  async deleteOrderStatus(id, index) {
+    const { orderStatus } = this.state;
+
+    //Requisitar confirmação do usuário antes de deletar o registro
     const confirmation = window.confirm(
-      "Você tem certeza que quer deletar a categoria " +
-        categories[index].name +
-        " e todos os produtos colocados nela?"
+      "Você tem certeza que quer deletar o status " +
+        orderStatus[index].name +
+        "? Todos os pedidos com esse status passarão para o status 'Entregue'."
     );
 
     if (confirmation) {
-      const deletedCategory = categories[index];
+      const deletedStatus = orderStatus[index];
 
-      categories.splice(index, 1);
-      this.setState({ categories });
+      orderStatus.splice(index, 1);
+      this.setState({ orderStatus });
 
-      let returnData = await this.props.deleteCategory(id);
+      let returnData = await this.props.deleteOrderStatus(id);
 
-      //Caso tenha ocorrido um erro, colocar a categoria de volta em seu local na lista
+      //Caso tenha ocorrido um erro, colocar o status de volta em seu local na lista
       if (returnData.error) {
-        categories.splice(index, 0, deletedCategory);
-        this.setState({ categories });
+        orderStatus.splice(index, 0, deletedStatus);
+        this.setState({ orderStatus });
       }
     }
   }
 
-  async changeActiveStatusCategory(category, index) {
-    const { categories } = this.state;
-    let { id, active } = category;
+  async changeActiveStatusCategory(status, index) {
+    const { orderStatus } = this.state;
+    let { id, final } = status;
 
-    //Atualizar status de disponibilidade
-    if (active === 1) {
-      active = 0;
-    } else {
-      active = 1;
+    //Se um dos estados originais for selecionado, não permitir alterações
+    if (id < 7) {
+      alert("Os estados básicos do sistema não podem ser alterados");
+      return 0;
     }
 
-    categories[index].active = active;
-    this.setState({ categories });
+    //Atualizar status de disponibilidade
+    if (final === 1) {
+      final = 0;
+    } else {
+      final = 1;
+    }
+
+    orderStatus[index].final = final;
+    this.setState({ orderStatus });
 
     //Enviar requisição para realizar alteração
-    const categoryData = { id, active };
-    const update = await this.props.updateCategory(categoryData);
+    const orderStatusData = { id, final };
+    const update = await this.props.updateOrderStatus(orderStatusData);
 
     //Caso tenha ocorrido um erro, retornar ao valor anterior
     if (update.error) {
-      if (active === 1) {
-        active = 0;
+      if (final === 1) {
+        final = 0;
       } else {
-        active = 1;
+        final = 1;
       }
 
-      category[index].active = active;
+      status[index].final = final;
 
-      this.setState({ categories });
+      this.setState({ orderStatus });
     }
   }
 
-  //Método para submeter o formulário de alterar categoria
+  //Método para submeter o formulário de alterar ou criar categoria
   async submit(e) {
     e.preventDefault();
 
@@ -120,28 +127,32 @@ export default class ManageCategoryView extends Component {
     const {
       modalEditMode,
       name,
-      categoryId: id,
-      categories,
-      categoryIndex: index,
+      editId: id,
+      orderStatus,
+      editIndex: index,
     } = this.state;
 
     // Verificar se a requisição realizada é para criar uma categoria nova ou editar uma categoria
     if (!modalEditMode) {
       //Passar dados informados no formulário para criar dados
-      const newCategory = await this.props.createCategory({ name });
+      const newStatus = await this.props.createOrderStatus({ name });
 
-      //Caso não ter ocorrido erro, adicionar nova categoria criada a lista
-      if (!newCategory.error) {
-        categories.push(newCategory);
+      //Caso não ter ocorrido erro, adicionar novo estado criado a lista.
+      // Caso tenha, parar processo
+      if (!newStatus.error) {
+        orderStatus.push(newStatus);
+      } else {
+        this.setState({ loading: false });
+        return 0;
       }
     } else {
       //Obter informações da categoria a ser editada
-      const categoryData = {
+      const orderStatusData = {
         id,
         name,
       };
 
-      const update = await this.props.updateCategory(categoryData);
+      const update = await this.props.updateOrderStatus(orderStatusData);
 
       //Caso um erro tenha ocorrido, parar o processo
       if (update.error) {
@@ -150,25 +161,25 @@ export default class ManageCategoryView extends Component {
       }
 
       //Atualizar lista de categorias
-      categories[index].name = name;
+      orderStatus[index].name = name;
     }
 
     this.hideModal();
 
-    this.setState({ loading: false, categories });
+    this.setState({ loading: false, orderStatus });
   }
 
   //#region Métodos para modificar a exposição modal
   showModal() {
     this.setState({ showModal: true });
   }
-  showEditModal(category, index) {
+  showEditModal(orderStatus, index) {
     this.setState({
       showModal: true,
       modalEditMode: true,
-      categoryId: category.id,
-      name: category.name,
-      categoryIndex: index,
+      editId: orderStatus.id,
+      name: orderStatus.name,
+      editIndex: index,
     });
   }
   hideModal() {
@@ -176,26 +187,26 @@ export default class ManageCategoryView extends Component {
       showModal: false,
       name: "",
       modalEditMode: false,
-      categoryId: 0,
-      categoryIndex: 0,
+      editId: 0,
+      editIndex: 0,
     });
   }
   //#endregion
 
   render() {
-    const { loading, categories, showModal, modalEditMode } = this.state;
+    const { loading, orderStatus, showModal, modalEditMode } = this.state;
 
     //#region Componentes visuais da página
-    const createCategoryModal = () => {
+    const createOrderStatusModal = () => {
       return (
         <div className="row">
-          {/** Formulário para que o administrador cadastre uma categoria */}
+          {/** Formulário para que o administrador cadastre um pedido de Status */}
           <form onSubmit={this.submit} className="genericForm">
             <div className="form-group">
               <input
                 type="text"
                 name="name"
-                placeholder="Nome da Categoria"
+                placeholder="Nome do Estado"
                 required
                 value={this.state.name}
                 onChange={(e) => {
@@ -224,14 +235,14 @@ export default class ManageCategoryView extends Component {
       );
     };
 
-    const categoryTable = (rows) => {
+    const orderStatusTable = (rows) => {
       return (
         <TableContainer component={Paper}>
           <Table /*className={classes.table}*/ aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell>Nome</TableCell>
-                <TableCell align="right">Disponível</TableCell>
+                <TableCell align="right">Final</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -243,7 +254,7 @@ export default class ManageCategoryView extends Component {
                   <TableCell align="right">
                     <CheckBox
                       className={
-                        row.active === 1
+                        row.final === 1
                           ? "mui-checkBoxIcon mui-checkBoxIconActive"
                           : "mui-checkBoxIcon"
                       }
@@ -254,16 +265,20 @@ export default class ManageCategoryView extends Component {
                   </TableCell>
 
                   <TableCell align="right">
-                    <Edit
-                      className="mui-editIcon"
-                      onClick={() => this.showEditModal(row, index)}
-                    />
-                    <Delete
-                      className="mui-deleteIcon"
-                      onClick={(e) => {
-                        this.deleteCategory(row.id, index);
-                      }}
-                    />
+                    {row.id < 7 ? null : (
+                      <div>
+                        <Edit
+                          className="mui-editIcon"
+                          onClick={() => this.showEditModal(row, index)}
+                        />
+                        <Delete
+                          className="mui-deleteIcon"
+                          onClick={(e) => {
+                            this.deleteOrderStatus(row.id, index);
+                          }}
+                        />
+                      </div>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
@@ -279,6 +294,7 @@ export default class ManageCategoryView extends Component {
       //Colunas que estarão na planilha do excel
       const headers = [
         { label: "Nome", value: "name" },
+        { label: "Estado Final", value: "final" },
         { label: "Criado em", value: "created_at" },
         { label: "Atualizado em", value: "updated_at" },
       ];
@@ -286,9 +302,9 @@ export default class ManageCategoryView extends Component {
       return (
         <ExportExcel
           headers={headers}
-          data={categories}
-          sheetName={"Categorias"}
-          title="Baixar tabela de categorias"
+          data={orderStatus}
+          sheetName={"Status de Pedido"}
+          title="Baixar tabela de Estados"
         />
       );
     };
@@ -297,77 +313,17 @@ export default class ManageCategoryView extends Component {
       <div className="AppBackground paddedScreen">
         <div className="buttonsDiv">
           <button className="button" onClick={this.showModal}>
-            Criar Nova Categoria
+            Criar Novo Estado
           </button>
         </div>
 
         <Modal show={showModal} handleClose={this.hideModal}>
-          {createCategoryModal()}
+          {createOrderStatusModal()}
         </Modal>
 
-        {categoryTable(categories)}
+        {orderStatusTable(orderStatus)}
         {loading ? <LoadingIcon /> : excelDownloadButton()}
       </div>
     );
   }
 }
-
-//#region Old Code
-/**
- * //const editCategoryModal = () => {};
-    const categoryList = () => {
-      return (
-        <ul className="categoryList">
-          {this.state.categories.map((item, index) => {
-            return (
-              <div key={index}>
-                <li>
-                  {item.name}
-
-                  <div className="iconOptions">
-                    <Link to={`/funcionario/editar-categoria/${item.id}`}>
-                      <i className="fas fa-edit editIcon"></i>
-                    </Link>
-
-                    <i
-                      className="fas fa-trash deleteIcon"
-                      onClick={() => this.deleteCategory(item.id, index)}
-                    ></i>
-                  </div>
-                </li>
-              </div>
-            );
-          })}
-        </ul>
-      );
-    };
-
-    const categoryList = () => {
-      return (
-        <ul className="categoryList">
-          {this.state.categories.map((item, index) => {
-            return (
-              <div key={index}>
-                <li>
-                  {item.name}
-
-                  <div className="iconOptions">
-                    <Link to={`/funcionario/editar-categoria/${item.id}`}>
-                      <i className="fas fa-edit editIcon"></i>
-                    </Link>
-
-                    <i
-                      className="fas fa-trash deleteIcon"
-                      onClick={() => this.deleteCategory(item.id, index)}
-                    ></i>
-                  </div>
-                </li>
-              </div>
-            );
-          })}
-        </ul>
-      );
-    };
-
- */
-//#endregion

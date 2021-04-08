@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+
 import LoadingIcon from "../Components/LoadingIcon";
 import { formatDateTime, formatMoney } from "../Services/FormatterFunctions";
 
@@ -18,7 +20,6 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-
 //#endregion
 
 export default class ManageOrdersView extends Component {
@@ -58,19 +59,20 @@ export default class ManageOrdersView extends Component {
   }
 
   //Método para atualizar os pedidos
-  async updateOrder(order, index) {
+  async updateOrder(order, newStatus, index) {
     const { orders } = this.state;
 
     let orderData = {
       id: order.id,
-      status: order.order_status_id,
+      status: newStatus.id,
     };
 
-    //Caso o usuário esteja cancelando ou finalizando pedido, pedir confirmaçãoantes de prosseguir
-    if (orderData.status === "5" || orderData.status === "6") {
-      const alteration = orderData.status === "5" ? "cancelar" : "finalizar";
+    //Caso o usuário esteja finalizando pedido, pedir confirmação antes de prosseguir
+    if (newStatus.final) {
       const confirmation = window.confirm(
-        "Você tem certeza que quer " + alteration + " este pedido?"
+        "Você tem certeza que quer finalizar este pedido com o estado '" +
+          newStatus.name +
+          "'?"
       );
 
       if (confirmation) {
@@ -98,19 +100,32 @@ export default class ManageOrdersView extends Component {
 
   render() {
     const { orders, ordersStatus, loading } = this.state;
+    const { user } = this.props;
 
     //Componente que forma o select com os status recebidos
     const selectStatus = (order, index) => {
       if (order.loading) {
         return <LoadingIcon />;
       }
+
       return (
         <select
           className="selectCategoryStatus"
           value={order.order_status_id}
           onChange={(e) => {
-            order.order_status_id = e.target.value;
-            this.updateOrder(order, index);
+            const statusId = e.target.value;
+            order.order_status_id = statusId;
+            var newStatus;
+
+            // Obter o novo status informado para realizar outras operações baseado no id informado
+            ordersStatus.forEach((orderStat) => {
+              // eslint-disable-next-line eqeqeq
+              if (orderStat.id == statusId) {
+                newStatus = orderStat;
+              }
+            });
+
+            this.updateOrder(order, newStatus, index);
           }}
         >
           {ordersStatus.map((status, sIndex) => {
@@ -156,6 +171,13 @@ export default class ManageOrdersView extends Component {
 
     return (
       <div className="App AppBackground paddedScreen">
+        {user.isUserAdmin() ? (
+          <div className="buttonsDiv">
+            <Link to={"/admin/status-pedido"} className="button">
+              Gerenciar Estados de Pedidos
+            </Link>
+          </div>
+        ) : null}
         {CollapsibleTable(orders)}
 
         <LoadingIcon loading={loading} />

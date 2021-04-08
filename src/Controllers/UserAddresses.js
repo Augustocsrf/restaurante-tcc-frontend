@@ -6,7 +6,7 @@ import { Context } from "../Context/Context";
 import UserAddressesGateway from "../Models/UserAddressesGateway";
 import UserAddressesView from "../Views/UserAddressesView";
 
-//Controller da tela de login do funcionário
+//Controller da tela de perfil de usuário
 export default class UserAddresses extends Component {
   static contextType = Context;
 
@@ -18,6 +18,7 @@ export default class UserAddresses extends Component {
     document.title = "Endereços";
 
     this.getAddresses = this.getAddresses.bind(this);
+    this.updateAddress = this.updateAddress.bind(this);
     this.deleteAddress = this.deleteAddress.bind(this);
     this.registerAddress = this.registerAddress.bind(this);
   }
@@ -43,11 +44,14 @@ export default class UserAddresses extends Component {
     return responseData;
   }
 
-  async registerAddress(addressData) {
-    if(addressData.zip){
-      
-    }
+  async updateAddress(addressData) {
+    const gateway = new UserAddressesGateway();
+    let responseData = await gateway.updateAddress(addressData);
 
+    return responseData;
+  }
+
+  async registerAddress(addressData) {
     //Adicionar id do usuário para as informações a serem enviadas
     const { user } = this.context;
     addressData.id = user.id;
@@ -74,6 +78,7 @@ export default class UserAddresses extends Component {
     return (
       <UserAddressesView
         user={user}
+        updateAddress={this.updateAddress}
         getAddresses={this.getAddresses}
         deleteAddress={this.deleteAddress}
         registerAddress={this.registerAddress}
